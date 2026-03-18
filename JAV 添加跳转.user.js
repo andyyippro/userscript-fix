@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV 添加跳转
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.2.14
+// @version      1.2.15
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary 这三个站点添加跳转在线观看的链接
 // @license      MIT
@@ -17,7 +17,6 @@
 // @require      https://update.greasyfork.org/scripts/522123/1511104/tampermonkey%20parallel.js
 // @require      https://cdn.jsdelivr.net/npm/preact@10.25.4/dist/preact.min.js
 // @connect      dmm.co.jp
-// @connect      video.dmm.co.jp
 // @connect      jable.tv
 // @connect      missav.ws
 // @connect      123av.com
@@ -117,8 +116,9 @@
   const siteList = [
     {
       name: "FANZA 動画",
-      hostname: "video.dmm.co.jp",
-      url: "https://video.dmm.co.jp/av/content/?id={{code}}",
+      hostname: "dmm.co.jp",
+      url: "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid={{code}}/",
+      // url: "https://video.dmm.co.jp/av/list/?key={{code}}",
       fetchType: "get",
       codeFormater: (preCode) => {
         const [pre, num] = preCode.split("-");
@@ -128,7 +128,6 @@
         }
         return `${pre.toLowerCase()}${padNum}`;
       },
-      fallbackCodeFormater: (code) => code.startsWith("1") ? code : `1${code}`,
       domQuery: {}
     },
     {
@@ -390,12 +389,6 @@
   };
   const isErrorCode = (resCode) => {
     return [404, 403].includes(resCode);
-  };
-  const getErrorCode = (error) => {
-    const status = Number(error == null ? void 0 : error.status);
-    if (!Number.isNaN(status) && status > 0) return status;
-    const messageCode = Number(error == null ? void 0 : error.message);
-    return !Number.isNaN(messageCode) && messageCode > 0 ? messageCode : void 0;
   };
   const getCode = (libItem) => {
     const { codeQueryStr } = libItem.querys;
@@ -898,19 +891,9 @@
       }
     } catch (error) {
       return {
-        isSuccess: false,
-        errorCode: getErrorCode(error)
+        isSuccess: false
       };
     }
-  };
-  const fanzaFetcher = async (args) => {
-    const res = await baseFetcher(args);
-    const retryCode = args.siteItem.fallbackCodeFormater == null ? void 0 : args.siteItem.fallbackCodeFormater(args.CODE);
-    if (res.isSuccess || res.errorCode !== 404 || !retryCode || retryCode === args.CODE) {
-      return res;
-    }
-    const retryLink = args.siteItem.url.replace("{{code}}", retryCode);
-    return await baseFetcher({ ...args, targetLink: retryLink, CODE: retryCode });
   };
   const javbleFetcher = async (args) => {
     const res = await baseFetcher(args);
@@ -919,9 +902,6 @@
     return await baseFetcher({ ...args, targetLink: newLink });
   };
   const fetcher = (args) => {
-    if (args.siteItem.name === "FANZA 動画") {
-      return fanzaFetcher(args);
-    }
     if (args.siteItem.name === "Jable") {
       return javbleFetcher(args);
     }
