@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV 添加跳转
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.2.19
+// @version      1.2.20
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary 这三个站点添加跳转在线观看的链接
 // @license      MIT
@@ -138,6 +138,11 @@
     if (specialPrefix) return `${specialPrefix}${baseCode}`;
     return FANZA_NO_PREFIX_CODES.has(baseCode) || FANZA_NO_PREFIX_PREFIXES.has(lowerPre) ? baseCode : `1${baseCode}`;
   };
+  const isHeyzoCode = (code) => /^HEYZO-\d+$/i.test(code);
+  const formatHeyzoCode = (preCode) => {
+    const match = preCode.match(/^HEYZO-(\d+)$/i);
+    return match ? match[1].padStart(4, "0") : preCode;
+  };
   const siteList = [
     {
       name: "FANZA 動画",
@@ -146,6 +151,15 @@
       // url: "https://video.dmm.co.jp/av/list/?key={{code}}",
       fetchType: "get",
       codeFormater: formatFanzaCode,
+      domQuery: {}
+    },
+    {
+      name: "HEYZO",
+      hostname: "heyzo.com",
+      url: "https://www.heyzo.com/moviepages/{{code}}/index.html",
+      fetchType: "false",
+      codeFormater: formatHeyzoCode,
+      codeMatcher: isHeyzoCode,
       domQuery: {}
     },
     {
@@ -967,7 +981,7 @@
     const [multipleNavi, setMultipleNavi] = h(_GM_getValue("multipleNavi", true));
     const [hiddenError, setHiddenError] = h(_GM_getValue("hiddenError", false));
     const list = siteList.filter(
-      (siteItem) => !disables.includes(siteItem.name) && !siteItem.hostname.includes(libItem.name)
+      (siteItem) => !disables.includes(siteItem.name) && !siteItem.hostname.includes(libItem.name) && (!(siteItem.codeMatcher) || siteItem.codeMatcher(CODE))
     );
     return /* @__PURE__ */ u$1(preact.Fragment, { children: [
       /* @__PURE__ */ u$1("div", { class: "jop-list", children: list.map((siteItem) => /* @__PURE__ */ u$1(
