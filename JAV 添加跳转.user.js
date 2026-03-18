@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV 添加跳转
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.2.18
+// @version      1.2.19
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary 这三个站点添加跳转在线观看的链接
 // @license      MIT
@@ -125,11 +125,17 @@
     "mdvr",
     "ngod"
   ]);
+  const FANZA_SPECIAL_PREFIXES = /* @__PURE__ */ new Map([
+    // 在这里填写需要改写前缀的 FANZA 番号，格式为 [原前缀, 目标前缀]，例如 ["sspo", "h_261"]
+    ["sspo", "h_261"]
+  ]);
   const formatFanzaCode = (preCode) => {
     const [pre, num] = preCode.split("-");
     if (!pre || !num) return preCode.toLowerCase();
     const lowerPre = pre.toLowerCase();
     const baseCode = `${lowerPre}${num.padStart(5, "0")}`;
+    const specialPrefix = FANZA_SPECIAL_PREFIXES.get(lowerPre);
+    if (specialPrefix) return `${specialPrefix}${baseCode}`;
     return FANZA_NO_PREFIX_CODES.has(baseCode) || FANZA_NO_PREFIX_PREFIXES.has(lowerPre) ? baseCode : `1${baseCode}`;
   };
   const siteList = [
