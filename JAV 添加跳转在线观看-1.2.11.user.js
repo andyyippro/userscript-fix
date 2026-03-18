@@ -126,7 +126,7 @@
         if (pre.toLowerCase().startsWith("start")) {
           return `1${pre.toLowerCase()}${padNum}`;
         }
-        return `${pre}${padNum}`;
+        return `${pre.toLowerCase()}${padNum}`;
       },
       domQuery: {}
     },
