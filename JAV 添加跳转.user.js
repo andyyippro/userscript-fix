@@ -120,7 +120,8 @@
     // 在这里填写整组都不需要加 1 的 FANZA 前缀，使用小写格式，例如 "ebod"
     "ebod",
     "voss",
-    "dvmm"
+    "dvmm",
+    "midv"
   ]);
   const formatFanzaCode = (preCode) => {
     const [pre, num] = preCode.split("-");
