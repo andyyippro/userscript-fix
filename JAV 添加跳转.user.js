@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV 添加跳转
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.2.15
+// @version      1.2.16
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary 这三个站点添加跳转在线观看的链接
 // @license      MIT
@@ -113,6 +113,21 @@
   var _GM_getValue = /* @__PURE__ */ (() => typeof GM_getValue != "undefined" ? GM_getValue : void 0)();
   var _GM_setValue = /* @__PURE__ */ (() => typeof GM_setValue != "undefined" ? GM_setValue : void 0)();
   var _GM_xmlhttpRequest = /* @__PURE__ */ (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
+  const FANZA_NO_PREFIX_CODES = /* @__PURE__ */ new Set([
+    // 在这里填写不需要加 1 的 FANZA 完整番号，使用小写 + 5 位数字格式，例如 "abc00001"
+  ]);
+  const FANZA_NO_PREFIX_PREFIXES = /* @__PURE__ */ new Set([
+    // 在这里填写整组都不需要加 1 的 FANZA 前缀，使用小写格式，例如 "ebod"
+    "ebod",
+    "voss"
+  ]);
+  const formatFanzaCode = (preCode) => {
+    const [pre, num] = preCode.split("-");
+    if (!pre || !num) return preCode.toLowerCase();
+    const lowerPre = pre.toLowerCase();
+    const baseCode = `${lowerPre}${num.padStart(5, "0")}`;
+    return FANZA_NO_PREFIX_CODES.has(baseCode) || FANZA_NO_PREFIX_PREFIXES.has(lowerPre) ? baseCode : `1${baseCode}`;
+  };
   const siteList = [
     {
       name: "FANZA 動画",
@@ -120,14 +135,7 @@
       url: "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid={{code}}/",
       // url: "https://video.dmm.co.jp/av/list/?key={{code}}",
       fetchType: "get",
-      codeFormater: (preCode) => {
-        const [pre, num] = preCode.split("-");
-        const padNum = num.padStart(5, "0");
-        if (pre.toLowerCase().startsWith("start")) {
-          return `1${pre.toLowerCase()}${padNum}`;
-        }
-        return `${pre.toLowerCase()}${padNum}`;
-      },
+      codeFormater: formatFanzaCode,
       domQuery: {}
     },
     {
