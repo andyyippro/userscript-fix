@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV 添加跳转
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.3.5
+// @version      1.3.6
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary 这三个站点添加跳转在线观看的链接
 // @license      MIT
@@ -130,7 +130,8 @@
     "juq",
     "jur",
     "crpd",
-    "nade"
+    "nade",
+    "flav"
   ]);
   const FANZA_SPECIAL_PREFIXES = /* @__PURE__ */ new Map([
     // 在这里填写需要改写前缀的 FANZA 番号，格式为 [原前缀, 目标前缀]，例如 ["sspo", "h_261"]
