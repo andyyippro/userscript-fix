@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV 添加跳转
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.3.20
+// @version      1.3.21
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -44,6 +44,7 @@
 // @connect      javbus.com
 // @connect      javdb.com
 // @connect      javlibrary.com
+// @connect      www.jav321.com
 // @grant        GM_addStyle
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -432,6 +433,16 @@
       }
     },
     {
+      name: "JAV321",
+      hostname: "www.jav321.com",
+      url: "https://www.jav321.com/search",
+      fetchType: "post",
+      domQuery: {
+        linkQuery: ".navbar-right .dropdown-menu a[href*='/video/']",
+        titleQuery: ".col-md-7.col-md-offset-1.col-xs-12 > .panel.panel-info > .panel-heading h3"
+      }
+    },
+    {
       name: "JAVLib",
       hostname: "javlibrary.com",
       url: "https://www.javlibrary.com/cn/vl_searchbyid.php?keyword={{code}}",
@@ -443,15 +454,20 @@
     }
   ];
   const SP_PREFIX = "300";
-  const gmGet = ({ url }) => {
+  const gmGet = ({ url, method = "GET", data, headers }) => {
     return new Promise((resolve, reject) => {
       _GM_xmlhttpRequest({
-        method: "GET",
+        method,
         url,
+        data,
+        headers,
         onload: (response) => resolve(response),
         onerror: (error) => reject(error)
       });
     });
+  };
+  const buildFormBody = (data) => {
+    return Object.entries(data).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join("&");
   };
   const isCaseInsensitiveEqual = (str1, str2) => {
     if (!str1 || !str2) return false;
@@ -938,6 +954,22 @@
       tag: tagsQuery({ leakageText: titleNodeText, subtitleText: titleNodeText })
     };
   }
+  function jav321Parser(responseText, siteItem, CODE) {
+    const res = serachPageParser(responseText, siteItem, CODE);
+    if (!res.isSuccess) {
+      return res;
+    }
+    const doc = new DOMParser().parseFromString(responseText, "text/html");
+    const detailLinkNode = doc.querySelector(siteItem.domQuery.linkQuery);
+    if (!detailLinkNode) {
+      return { isSuccess: false };
+    }
+    const resultLink = detailLinkNode.href.replace(detailLinkNode.hostname, siteItem.hostname);
+    return {
+      ...res,
+      resultLink
+    };
+  }
   const baseFetcher = async ({ siteItem, targetLink, CODE }) => {
     if (siteItem.fetchType === "false") {
       return Promise.resolve({
@@ -946,7 +978,14 @@
       });
     }
     try {
-      const response = await gmGet({ url: targetLink });
+      const requestConfig = siteItem.fetchType === "post" ? {
+        method: "POST",
+        data: buildFormBody({ sn: CODE }),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        }
+      } : {};
+      const response = await gmGet({ url: targetLink, ...requestConfig });
       if (isErrorCode(response.status)) {
         throw Error(String(response.status));
       }
@@ -955,6 +994,8 @@
           resultLink: targetLink,
           ...videoPageParser(response.responseText, siteItem.domQuery)
         };
+      } else if (siteItem.fetchType === "post") {
+        return jav321Parser(response.responseText, siteItem, CODE);
       } else {
         return {
           ...serachPageParser(response.responseText, siteItem, CODE)
