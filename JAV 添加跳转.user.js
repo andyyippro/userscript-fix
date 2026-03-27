@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV 添加跳转
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.3.22
+// @version      1.3.23
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -101,13 +101,16 @@
     {
       name: "javlib",
       enable: true,
-      identifier: "img[src*='logo-top']",
+      identifier: "#video_info, #video_id td.text, #video_jacket_img, img[src*='logo-top']",
+      matcher() {
+        return location.hostname.includes("javlibrary.com") && /[?&]v=jav/i.test(location.search);
+      },
       querys: {
-        panelQueryStr: "#video_jacket_info #video_info",
-        codeQueryStr: `#video_id td.text`
+        panelQueryStr: "#video_info, #video_jacket_info #video_info",
+        codeQueryStr: `#video_id td.text, #video_id .text, #video_id`
       },
       method() {
-        const panel = document.querySelector("#video_info");
+        const panel = document.querySelector("#video_info, #video_jacket_info #video_info");
         panel == null ? void 0 : panel.classList.add("lib-panel");
       }
     },
@@ -1099,7 +1102,7 @@
     ] });
   });
   function main() {
-    const libItem = libSites.find((item) => document.querySelector(item.identifier));
+    const libItem = libSites.find((item) => item.matcher ? item.matcher() : document.querySelector(item.identifier));
     if (!libItem) {
       console.error("||jop 匹配站点失败");
       return;
