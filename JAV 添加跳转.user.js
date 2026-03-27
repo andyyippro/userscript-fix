@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV 添加跳转
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.3.25
+// @version      1.3.26
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -106,11 +106,11 @@
         return location.hostname.includes("javlibrary.com") && (/[?&]v=jav/i.test(location.search) || /\/[a-z]{2}\/jav[^/?#]+\.html$/i.test(location.pathname));
       },
       querys: {
-        panelQueryStr: "#video_info, #video_jacket_info #video_info",
+        panelQueryStr: "#video_info, #video_jacket_info #video_info, #video_jacket_info",
         codeQueryStr: `#video_id td.text, #video_id .text, #video_id`
       },
       method() {
-        const panel = document.querySelector("#video_info, #video_jacket_info #video_info");
+        const panel = document.querySelector("#video_info, #video_jacket_info #video_info, #video_jacket_info");
         panel == null ? void 0 : panel.classList.add("lib-panel");
       }
     },
@@ -1108,22 +1108,43 @@
       return matcherHit || document.querySelector(item.identifier);
     });
     if (!libItem) {
-      console.error("||jop 匹配站点失败");
-      return;
+      return false;
     }
     const CODE = getCode(libItem);
     libItem.method();
     const panel = document.querySelector(libItem.querys.panelQueryStr);
     if (!panel) {
-      console.error("||jop 插入界面失败");
-      return;
+      return false;
+    }
+    if (panel.querySelector(":scope > .jop-app, :scope > [data-jop-app='true']")) {
+      return true;
     }
     const app = document.createElement("div");
     app.classList.add("jop-app");
+    app.dataset.jopApp = "true";
     panel.append(app);
     preact.render(/* @__PURE__ */ u$1(App, { libItem, CODE }), app);
     console.log("||脚本挂载成功", CODE);
+    return true;
   }
-  main();
+  function bootstrap() {
+    if (main()) return;
+    let retryCount = 0;
+    const timer = setInterval(() => {
+      retryCount += 1;
+      if (main() || retryCount >= 40) {
+        clearInterval(timer);
+      }
+    }, 500);
+    const observer = new MutationObserver(() => {
+      if (main()) {
+        observer.disconnect();
+        clearInterval(timer);
+      }
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+    setTimeout(() => observer.disconnect(), 2e4);
+  }
+  bootstrap();
 
 })(preact);
