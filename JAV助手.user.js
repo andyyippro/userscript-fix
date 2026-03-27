@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.3.35
+// @version      1.3.36
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -1075,16 +1075,57 @@
       cidSource: jav321Cid ? "jav321Button" : "fallback"
     };
   };
-  const SiteResolver = ({ siteItem, CODE, libItem, siteResults, setSiteResults }) => {
-    const jav321Result = siteResults["JAV321"];
+  const HiddenJav321Resolver = ({ CODE, setSiteResults }) => {
+    const siteItem = siteList.find((item) => item.name === "JAV321");
     y(() => {
+      if (!siteItem) return;
       let active = true;
-      const mergeResult = (patch) => {
+      const { requestCode, originLink } = buildSiteRequest(siteItem, CODE);
+      setSiteResults((prev) => ({
+        ...prev,
+        JAV321: {
+          ...(prev.JAV321 || {}),
+          loading: true,
+          requestCode,
+          originLink
+        }
+      }));
+      fetcher({
+        siteItem,
+        targetLink: originLink,
+        CODE: requestCode
+      }).then((res) => {
         if (!active) return;
         setSiteResults((prev) => ({
           ...prev,
-          [siteItem.name]: {
-            ...(prev[siteItem.name] || {}),
+          JAV321: {
+            ...res,
+            loading: false,
+            requestCode,
+            originLink
+          }
+        }));
+      });
+      return () => {
+        active = false;
+      };
+    }, [CODE]);
+    return /* @__PURE__ */ u$1(preact.Fragment, {});
+  };
+  const SiteBtn = ({ siteItem, CODE, multipleNavi, hiddenError, siteResults, libItem, setSiteResults }) => {
+    const { name } = siteItem;
+    const [loading, setLoading] = h(false);
+    const [fetchRes, setFetchRes] = h();
+    const jav321Result = siteResults["JAV321"];
+    const { originLink: defaultOriginLink, requestCode: defaultRequestCode } = buildSiteRequest(siteItem, CODE);
+    y(() => {
+      let active = true;
+      const updateShared = (patch) => {
+        if (siteItem.name !== "JAV321") return;
+        setSiteResults((prev) => ({
+          ...prev,
+          JAV321: {
+            ...(prev.JAV321 || {}),
             ...patch
           }
         }));
@@ -1093,52 +1134,49 @@
         if (siteItem.name === "FANZA 動画") {
           const target = resolveFanzaTargetLink({ siteItem, CODE, libItem, siteResults });
           if (target.status === "waiting") {
-            mergeResult({
-              loading: true,
-              cidSource: target.cidSource,
-              requestCode: target.requestCode,
-              originLink: ""
-            });
+            setLoading(true);
+            setFetchRes(void 0);
             return;
           }
-          mergeResult({
-            loading: true,
-            cidSource: target.cidSource,
-            requestCode: target.requestCode,
-            originLink: target.targetLink
-          });
+          setLoading(true);
           const res = await fetcher({
             siteItem,
             targetLink: target.targetLink,
             CODE: target.requestCode
           });
           if (!active) return;
-          mergeResult({
+          setFetchRes({
             ...res,
-            loading: false,
             cidSource: target.cidSource,
             requestCode: target.requestCode,
             originLink: target.targetLink
           });
+          setLoading(false);
           return;
         }
-        const { requestCode, originLink } = buildSiteRequest(siteItem, CODE);
-        mergeResult({
+        setLoading(true);
+        updateShared({
           loading: true,
-          requestCode,
-          originLink
+          requestCode: defaultRequestCode,
+          originLink: defaultOriginLink
         });
         const res = await fetcher({
           siteItem,
-          targetLink: originLink,
-          CODE: requestCode
+          targetLink: defaultOriginLink,
+          CODE: defaultRequestCode
         });
         if (!active) return;
-        mergeResult({
+        setFetchRes({
+          ...res,
+          requestCode: defaultRequestCode,
+          originLink: defaultOriginLink
+        });
+        setLoading(false);
+        updateShared({
           ...res,
           loading: false,
-          requestCode,
-          originLink
+          requestCode: defaultRequestCode,
+          originLink: defaultOriginLink
         });
       };
       run();
@@ -1153,12 +1191,6 @@
       jav321Result == null ? void 0 : jav321Result.multipleRes,
       jav321Result == null ? void 0 : jav321Result.resultLink
     ] : [CODE]);
-    return /* @__PURE__ */ u$1(preact.Fragment, {});
-  };
-  const SiteBtn = ({ siteItem, CODE, multipleNavi, hiddenError, siteResults }) => {
-    const fetchRes = siteResults[siteItem.name];
-    const { originLink: defaultOriginLink } = buildSiteRequest(siteItem, CODE);
-    const loading = !!(fetchRes == null ? void 0 : fetchRes.loading) || siteItem.name === "FANZA 動画" && !fetchRes;
     const multipleFlag = multipleNavi && (fetchRes == null ? void 0 : fetchRes.multipleRes);
     const tag = multipleFlag ? "多结果" : fetchRes == null ? void 0 : fetchRes.tag;
     const originLink = (fetchRes == null ? void 0 : fetchRes.originLink) || defaultOriginLink;
@@ -1197,21 +1229,9 @@
     const list = siteList.filter(
       (siteItem) => !disables.includes(siteItem.name) && !siteItem.hostname.includes(libItem.name) && (!(siteItem.codeMatcher) || siteItem.codeMatcher(CODE))
     );
-    const resolverList = siteList.filter(
-      (siteItem) => (!disables.includes(siteItem.name) || siteItem.name === "JAV321") && !siteItem.hostname.includes(libItem.name) && (!(siteItem.codeMatcher) || siteItem.codeMatcher(CODE))
-    );
+    const shouldResolveHiddenJav321 = disables.includes("JAV321") && libItem.name !== "jav321";
     return /* @__PURE__ */ u$1(preact.Fragment, { children: [
-      /* @__PURE__ */ u$1("div", { style: "display:none", children: resolverList.map((siteItem) => /* @__PURE__ */ u$1(
-        SiteResolver,
-        {
-          siteItem,
-          CODE,
-          libItem,
-          siteResults,
-          setSiteResults
-        },
-        siteItem.name + "_resolver"
-      )) }),
+      shouldResolveHiddenJav321 && /* @__PURE__ */ u$1("div", { style: "display:none", children: /* @__PURE__ */ u$1(HiddenJav321Resolver, { CODE, setSiteResults }) }),
       /* @__PURE__ */ u$1("div", { class: "jop-list", children: list.map((siteItem) => /* @__PURE__ */ u$1(
         SiteBtn,
         {
@@ -1219,7 +1239,9 @@
           CODE,
           multipleNavi,
           hiddenError,
-          siteResults
+          siteResults,
+          libItem,
+          setSiteResults
         },
         siteItem.name
       )) }),
