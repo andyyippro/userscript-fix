@@ -1172,7 +1172,7 @@
       {
         className: "jop-button " + (loading ? " " : colorClass),
         target: "_blank",
-        href: loading && siteItem.name === "FANZA 動画" ? void 0 : !resultLink ? originLink : resultLink,
+        href: !resultLink ? originLink : resultLink,
         onClick: (event) => {
           if (loading && siteItem.name === "FANZA 動画") {
             event.preventDefault();
@@ -1201,7 +1201,7 @@
       (siteItem) => (!disables.includes(siteItem.name) || siteItem.name === "JAV321") && !siteItem.hostname.includes(libItem.name) && (!(siteItem.codeMatcher) || siteItem.codeMatcher(CODE))
     );
     return /* @__PURE__ */ u$1(preact.Fragment, { children: [
-      resolverList.map((siteItem) => /* @__PURE__ */ u$1(
+      /* @__PURE__ */ u$1("div", { style: "display:none", children: resolverList.map((siteItem) => /* @__PURE__ */ u$1(
         SiteResolver,
         {
           siteItem,
@@ -1211,7 +1211,7 @@
           setSiteResults
         },
         siteItem.name + "_resolver"
-      )),
+      )) }),
       /* @__PURE__ */ u$1("div", { class: "jop-list", children: list.map((siteItem) => /* @__PURE__ */ u$1(
         SiteBtn,
         {
