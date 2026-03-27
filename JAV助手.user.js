@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.3.37
+// @version      1.3.38
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -25,7 +25,6 @@
 // @connect      123av.com
 // @connect      supjav.com
 // @connect      netflav5.com
-// @connect      avgle.com
 // @connect      javhhh.com
 // @connect      bestjavporn.com
 // @connect      javmenu.com
@@ -37,7 +36,6 @@
 // @connect      paipancon.com
 // @connect      ggjav.com
 // @connect      www.av01.tv
-// @connect      18sex.org
 // @connect      highporn.net
 // @connect      evojav.pro
 // @connect      18av.mm-cg.com
@@ -262,16 +260,6 @@
       }
     },
     {
-      name: "Avgle",
-      hostname: "avgle.com",
-      url: "https://avgle.com/search/videos?search_query={{code}}&search_type=videos",
-      fetchType: "parser",
-      domQuery: {
-        linkQuery: ".container>.row .row .well>a[href]",
-        titleQuery: ".container>.row .row .well .video-title"
-      }
-    },
-    {
       name: "JAVHHH",
       hostname: "javhhh.com",
       url: "https://javhhh.com/v/?wd={{code}}",
@@ -376,13 +364,6 @@
         linkQuery: "div.well>a[href^='/video/']",
         titleQuery: "div.well>a[href^='/video/']"
       }
-    },
-    {
-      name: "18sex",
-      hostname: "18sex.org",
-      url: "https://www.18sex.org/cn/search/{{code}}/",
-      fetchType: "parser",
-      domQuery: { linkQuery: ".white_link[href]", titleQuery: ".white_link>.card-title" }
     },
     {
       name: "highporn",
@@ -1219,7 +1200,7 @@
   };
   const App = M(function({ libItem, CODE }) {
     const DEF_DIS = [
-      ...["AvJoy", "baihuse", "GGJAV", "AV01", "18sex", "highporn", "evojav", "HAYAV"],
+      ...["AvJoy", "baihuse", "GGJAV", "AV01", "highporn", "evojav", "HAYAV"],
       ...["JavBus", "JavDB", "JAVLib", "MISSAV_", "123av", "javhub", "javgo", "JAVMENU"]
     ];
     const [disables, setDisables] = h(_GM_getValue("disable", DEF_DIS));
