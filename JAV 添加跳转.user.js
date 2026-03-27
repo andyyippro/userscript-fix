@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV 添加跳转
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.3.27
+// @version      1.3.28
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -14,6 +14,8 @@
 // @match        *://*.app.javdb457.com/*
 // @match        *://*.javdb457.com/*
 // @match        *://*.javdb.com/*
+// @match        *://*.javlibrary.com/*
+// @match        *://javlibrary.com/*
 // @match        *://*.v90f.com/*
 // @require      https://update.greasyfork.org/scripts/522123/1511104/tampermonkey%20parallel.js
 // @require      https://cdn.jsdelivr.net/npm/preact@10.25.4/dist/preact.min.js
@@ -101,13 +103,13 @@
     {
       name: "javlib",
       enable: true,
-      identifier: "img[src*='logo-top']",
+      identifier: "#video_jacket_info #video_info, #video_id td.text, #video_title h3 a[href$='.html'], img[src*='logo-top']",
       querys: {
-        panelQueryStr: "#video_jacket_info #video_info",
-        codeQueryStr: `#video_id td.text`
+        panelQueryStr: "#video_jacket_info #video_info, #video_info",
+        codeQueryStr: `#video_id td.text, #video_id .text`
       },
       method() {
-        const panel = document.querySelector("#video_info");
+        const panel = document.querySelector("#video_jacket_info #video_info, #video_info");
         panel == null ? void 0 : panel.classList.add("lib-panel");
       }
     },
