@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV 添加跳转
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.3.23
+// @version      1.3.24
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -170,7 +170,8 @@
     ["renod", "24"],
     ["tbtb", "h_840"],
     ["suke", "h_1711"],
-    ["saba", "h_244"]
+    ["saba", "h_244"],
+    ["gl", "h_113"]
   ]);
   const formatFanzaCode = (preCode) => {
     const [pre, num] = preCode.split("-");
