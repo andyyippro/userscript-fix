@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.3.38
+// @version      1.3.39
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -53,7 +53,7 @@
 // @updateURL https://raw.githubusercontent.com/andyyippro/userscript-fix/main/JAV%E5%8A%A9%E6%89%8B.user.js
 // ==/UserScript==
 
-(o=>{if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})(' .jop-list{box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:10px;width:100%;height:100%;z-index:1;transition:right .2s ease-in-out;color:#000}.jop-button,.jop-button_def{position:relative;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:3px 10px;border-radius:4px;font-weight:500;font-size:14px;border:1px solid #dcdfe6;color:#606266;cursor:pointer}.jop-button_def{margin:10px 0;width:100px}.jop-button:visited{color:#606266}.jop-button:hover{text-decoration:none;color:#409eff;border:1px solid #c6e2ff;background-color:#ecf5ff}.jop-button_label{position:absolute;font-size:10px;padding:4px;border-radius:4px;top:-13px;right:-10px;line-height:.75;color:#67c23a;border:1px solid #e1f3d8;background:#fff}.jop-button_green{color:#fff!important;background-color:#67c23a}.jop-button_green:hover{color:#fff!important;background-color:#95d475}.jop-button_red{color:#fff!important;background-color:#f56c6c}.jop-button_red:hover{color:#fff!important;background-color:#f89898}.jop-loading{display:inline-block;width:14px;height:14px;margin-right:10px;border:2px dashed #dcdfe6;border-top-color:transparent;border-radius:100%;animation:btnLoading infinite 1s linear}@keyframes btnLoading{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.jop-tag{padding:3px 6px;color:#409eff!important;background:#ecf5ff;border:1px solid #d9ecff;border-radius:4px}.jop-setting{margin-top:20px}.jop-setting-list{display:flex;flex-wrap:wrap}.jop-setting-title{margin:10px 0 5px;font-weight:700}.jop-setting-item{display:flex;height:20px;align-items:center;margin-right:15px;-webkit-user-select:none;user-select:none;cursor:pointer}.db-panel .movie-panel-info div.panel-block{padding:5.5px 12px}.db-panel .jop-app{padding:15px 12px}.lib-panel .jop-app{padding:20px 30px;margin-top:10px}.jav321-panel .jop-app{margin-top:15px;padding-top:15px;border-top:1px solid #eee}input[type=checkbox],input[type=radio]{margin:0 0 0 5px;cursor:pointer}.jop-tooltip-container{position:relative;display:inline-block}.jop-tooltip{position:absolute;bottom:100%;left:50%;transform:translate(-50%);background-color:#333;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;white-space:nowrap;z-index:1000}.jop-setting-label{cursor:pointer}.jop-checkbox{display:inline-flex;align-items:center;cursor:pointer;margin-right:15px;-webkit-user-select:none;user-select:none}.jop-checkbox-input{position:absolute;opacity:0;cursor:pointer}.jop-checkbox-custom{position:relative;display:inline-block;width:16px;height:16px;background-color:#fff;border:1px solid #dcdfe6;border-radius:2px;transition:all .3s}.jop-checkbox-input:checked+.jop-checkbox-custom{background-color:#409eff;border-color:#409eff}.jop-checkbox-input:checked+.jop-checkbox-custom:after{content:"";position:absolute;top:1px;left:4px;width:5px;height:10px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg)}.jop-checkbox-label{margin-left:3px;font-size:14px;color:#606266}.jop-checkbox:hover .jop-checkbox-custom{border-color:#409eff} ');
+(o=>{if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})('.jop-waterfall-end{text-align:center;padding:20px;color:#888;font-size:1.2em;letter-spacing:2px} .jop-list{box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:10px;width:100%;height:100%;z-index:1;transition:right .2s ease-in-out;color:#000}.jop-button,.jop-button_def{position:relative;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:3px 10px;border-radius:4px;font-weight:500;font-size:14px;border:1px solid #dcdfe6;color:#606266;cursor:pointer}.jop-button_def{margin:10px 0;width:100px}.jop-button:visited{color:#606266}.jop-button:hover{text-decoration:none;color:#409eff;border:1px solid #c6e2ff;background-color:#ecf5ff}.jop-button_label{position:absolute;font-size:10px;padding:4px;border-radius:4px;top:-13px;right:-10px;line-height:.75;color:#67c23a;border:1px solid #e1f3d8;background:#fff}.jop-button_green{color:#fff!important;background-color:#67c23a}.jop-button_green:hover{color:#fff!important;background-color:#95d475}.jop-button_red{color:#fff!important;background-color:#f56c6c}.jop-button_red:hover{color:#fff!important;background-color:#f89898}.jop-loading{display:inline-block;width:14px;height:14px;margin-right:10px;border:2px dashed #dcdfe6;border-top-color:transparent;border-radius:100%;animation:btnLoading infinite 1s linear}@keyframes btnLoading{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.jop-tag{padding:3px 6px;color:#409eff!important;background:#ecf5ff;border:1px solid #d9ecff;border-radius:4px}.jop-setting{margin-top:20px}.jop-setting-list{display:flex;flex-wrap:wrap}.jop-setting-title{margin:10px 0 5px;font-weight:700}.jop-setting-item{display:flex;height:20px;align-items:center;margin-right:15px;-webkit-user-select:none;user-select:none;cursor:pointer}.db-panel .movie-panel-info div.panel-block{padding:5.5px 12px}.db-panel .jop-app{padding:15px 12px}.lib-panel .jop-app{padding:20px 30px;margin-top:10px}.jav321-panel .jop-app{margin-top:15px;padding-top:15px;border-top:1px solid #eee}input[type=checkbox],input[type=radio]{margin:0 0 0 5px;cursor:pointer}.jop-tooltip-container{position:relative;display:inline-block}.jop-tooltip{position:absolute;bottom:100%;left:50%;transform:translate(-50%);background-color:#333;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;white-space:nowrap;z-index:1000}.jop-setting-label{cursor:pointer}.jop-checkbox{display:inline-flex;align-items:center;cursor:pointer;margin-right:15px;-webkit-user-select:none;user-select:none}.jop-checkbox-input{position:absolute;opacity:0;cursor:pointer}.jop-checkbox-custom{position:relative;display:inline-block;width:16px;height:16px;background-color:#fff;border:1px solid #dcdfe6;border-radius:2px;transition:all .3s}.jop-checkbox-input:checked+.jop-checkbox-custom{background-color:#409eff;border-color:#409eff}.jop-checkbox-input:checked+.jop-checkbox-custom:after{content:"";position:absolute;top:1px;left:4px;width:5px;height:10px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg)}.jop-checkbox-label{margin-left:3px;font-size:14px;color:#606266}.jop-checkbox:hover .jop-checkbox-custom{border-color:#409eff} ');
 
 (function (preact) {
   'use strict';
@@ -67,6 +67,10 @@
     if ("function" == typeof e2 && (a2 = e2.defaultProps)) for (c2 in a2) void 0 === p2[c2] && (p2[c2] = a2[c2]);
     return preact.options.vnode && preact.options.vnode(l2), l2;
   }
+  // ===== 瀑布流常量 =====
+  const JAVDB_ITEM_SELECTOR = '.movie-list .item';
+  const waterfallEnabled = GM_getValue('scroll_status', 1);
+
   const libSites = [
     {
       name: "javdb",
@@ -1249,10 +1253,166 @@
       )
     ] });
   });
+  // ===== 瀑布流功能（移植自 javOldDriver，改为原生 JS 实现）=====
+  class Waterfall {
+    constructor({ nextSel, itemSel, contSel, pagiSel, isJavDB = false }) {
+      this.nextSel = nextSel;
+      this.itemSel = itemSel;
+      this.contSel = contSel;
+      this.pagiSel = pagiSel;
+      this.isJavDB = isJavDB;
+      this.loading = false;
+      this.ended = false;
+      this.loadCount = 0;
+      this._onScroll = this._checkScroll.bind(this);
+      if (document.querySelector(this.itemSel)) {
+        document.addEventListener('scroll', this._onScroll);
+        document.addEventListener('wheel', this._onScroll);
+      }
+    }
+    _checkScroll() {
+      if (this.loading || this.ended) return;
+      const anchor = document.querySelector(this.pagiSel);
+      if (!anchor) { this._end(); return; }
+      if (anchor.getBoundingClientRect().top - window.innerHeight < 1200) {
+        this._loadNext();
+      }
+    }
+    async _loadNext() {
+      this.loading = true;
+      const nextLink = document.querySelector(this.nextSel);
+      if (!nextLink || !nextLink.href) { this._end(); return; }
+      const nextUrl = nextLink.href;
+      try {
+        const res = await fetch(nextUrl, { credentials: 'same-origin' });
+        if (!res.ok) { this._end(); return; }
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const items = Array.from(doc.querySelectorAll(this.itemSel));
+        const newNext = doc.querySelector(this.nextSel);
+        const newNextUrl = newNext ? newNext.href : null;
+        // ★ 修复 JavDB "最后一页无限循环" bug
+        if (this.isJavDB && this.loadCount > 0 && newNextUrl === nextUrl) {
+          const firstBox = items[0] && items[0].querySelector('a.box');
+          if (firstBox) {
+            const href = firstBox.getAttribute('href');
+            if (document.querySelector(`#waterfall .item a.box[href="${href}"]`)) {
+              this._end(); return;
+            }
+          }
+        }
+        // 更新当前页面中的下一页链接
+        const curNext = document.querySelector(this.nextSel);
+        if (curNext) {
+          if (newNextUrl) { curNext.href = newNextUrl; }
+          else { curNext.removeAttribute('href'); }
+        }
+        // 追加新条目到容器
+        const cont = document.querySelector(this.contSel);
+        if (cont && items.length) {
+          items.forEach(item => {
+            item.querySelectorAll('a').forEach(a => { a.target = '_blank'; });
+            cont.appendChild(item);
+          });
+        }
+        this.loadCount++;
+        if (!newNextUrl) this._end();
+      } catch (e) {
+        console.error('||jop 瀑布流加载失败', e);
+      }
+      this.loading = false;
+    }
+    _end() {
+      this.ended = true;
+      document.removeEventListener('scroll', this._onScroll);
+      document.removeEventListener('wheel', this._onScroll);
+      const anchor = document.querySelector(this.pagiSel);
+      if (anchor) {
+        const end = document.createElement('p');
+        end.className = 'jop-waterfall-end';
+        end.textContent = '— The End —';
+        anchor.replaceWith(end);
+      }
+    }
+  }
+
+  // 瀑布流开关按钮
+  function createWaterfallToggleBtn() {
+    const btn = document.createElement('a');
+    btn.href = '#';
+    btn.style.cssText = 'color:blue;font:bold 12px monospace;margin-right:8px;cursor:pointer;';
+    btn.textContent = waterfallEnabled ? '关闭瀑布流' : '开启瀑布流';
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      GM_setValue('scroll_status', waterfallEnabled ? 0 : 1);
+      location.reload();
+    });
+    return btn;
+  }
+
+  // 列表页入口：检测当前站点并启动瀑布流
+  function initWaterfall() {
+    // ——— JavDB 列表页 ———
+    // JAVDB_ITEM_SELECTOR 兼容 .v（垂直大封面）和 .h（横向列表）两种显示模式
+    const javdbFirstItem = document.querySelector(JAVDB_ITEM_SELECTOR);
+    if (javdbFirstItem) {
+      const list = javdbFirstItem.closest('.movie-list');
+      if (list && !list.id) list.id = 'waterfall';
+      const tabsBox = document.querySelector('.tabs.is-boxed, .list-toolbar, nav.level');
+      if (tabsBox) tabsBox.prepend(createWaterfallToggleBtn());
+      if (waterfallEnabled) {
+        new Waterfall({
+          nextSel: '.pagination-next',
+          itemSel: JAVDB_ITEM_SELECTOR,
+          contSel: '#waterfall',
+          pagiSel: '.pagination',
+          isJavDB: true,
+        });
+      }
+      console.log('||jop 瀑布流已启动（JavDB）');
+      return;
+    }
+    // ——— JavBus 列表页 ———
+    const javbusFirstItem = document.querySelector('div#waterfall div.item');
+    if (javbusFirstItem) {
+      const pagi = document.querySelector('.pagination-lg');
+      if (pagi) pagi.prepend(createWaterfallToggleBtn());
+      if (waterfallEnabled) {
+        new Waterfall({
+          nextSel: 'a#next',
+          itemSel: 'div#waterfall div.item',
+          contSel: '.masonry',
+          pagiSel: '.pagination-lg',
+        });
+      }
+      console.log('||jop 瀑布流已启动（JavBus）');
+      return;
+    }
+    // ——— JavLibrary 列表页 ———
+    const javlibFirstItem = document.querySelector('div.videos div.video');
+    if (javlibFirstItem) {
+      const videos = javlibFirstItem.closest('div.videos');
+      if (videos && !videos.id) videos.id = 'waterfall';
+      const dispMode = document.querySelector('.displaymode .right');
+      if (dispMode) dispMode.prepend(createWaterfallToggleBtn());
+      if (waterfallEnabled) {
+        new Waterfall({
+          nextSel: 'a.page.next',
+          itemSel: 'div.videos div.video',
+          contSel: '#waterfall',
+          pagiSel: '.page_selector',
+        });
+      }
+      console.log('||jop 瀑布流已启动（JavLibrary）');
+      return;
+    }
+  }
+  // ===== 瀑布流功能 END =====
+
   function main() {
     const libItem = libSites.find((item) => document.querySelector(item.identifier));
     if (!libItem) {
-      console.error("||jop 匹配站点失败");
+      initWaterfall();
       return;
     }
     const CODE = getCode(libItem);
