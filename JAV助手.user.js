@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.3.36
+// @version      1.3.37
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -190,7 +190,7 @@
   };
   const siteList = [
     {
-      name: "FANZA 動画",
+      name: "DMM",
       hostname: "dmm.co.jp",
       url: "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid={{code}}/",
       // url: "https://video.dmm.co.jp/av/list/?key={{code}}",
@@ -1131,7 +1131,7 @@
         }));
       };
       const run = async () => {
-        if (siteItem.name === "FANZA 動画") {
+        if (siteItem.name === "DMM") {
           const target = resolveFanzaTargetLink({ siteItem, CODE, libItem, siteResults });
           if (target.status === "waiting") {
             setLoading(true);
@@ -1183,7 +1183,7 @@
       return () => {
         active = false;
       };
-    }, siteItem.name === "FANZA 動画" ? [
+    }, siteItem.name === "DMM" ? [
       CODE,
       libItem.name,
       jav321Result == null ? void 0 : jav321Result.loading,
@@ -1206,7 +1206,7 @@
         target: "_blank",
         href: !resultLink ? originLink : resultLink,
         onClick: (event) => {
-          if (loading && siteItem.name === "FANZA 動画") {
+          if (loading && siteItem.name === "DMM") {
             event.preventDefault();
           }
         },
