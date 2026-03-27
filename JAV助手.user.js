@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.3.30
+// @version      1.3.31
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -13,7 +13,9 @@
 // @include      /^https?:\/\/(\w*\.)?jav321\.com\/video\/.*$/
 // @match        *://*.app.javdb457.com/*
 // @match        *://*.javdb457.com/*
+// @match        *://javdb457.com/*
 // @match        *://*.javdb.com/*
+// @match        *://javdb.com/*
 // @match        *://*.javlibrary.com/*
 // @match        *://javlibrary.com/*
 // @match        *://*.v90f.com/*
@@ -1035,10 +1037,10 @@
   const infiniteScrollSites = [
     {
       name: "javdb",
-      isMatch: () => !location.pathname.startsWith("/v/") && !!document.querySelector(".movie-list>.item") && !!document.querySelector(".pagination"),
+      isMatch: () => !location.pathname.startsWith("/v/") && !!document.querySelector(".movie-list .item") && !!document.querySelector("a.pagination-next[href], .pagination .pagination-next[href]"),
       containerSelector: ".movie-list",
       itemSelector: ".item",
-      nextSelector: ".pagination .pagination-next[href]",
+      nextSelector: "a.pagination-next[href], .pagination .pagination-next[href]",
       paginationSelector: ".pagination",
       dedupeSelector: "a.box[href]",
       preparePage() {
@@ -1139,7 +1141,7 @@
       this.sentinel == null ? void 0 : this.sentinel.remove();
     }
     init() {
-      if (!this.container || !this.pagination) return false;
+      if (!this.container) return false;
       this.config.preparePage == null ? void 0 : this.config.preparePage();
       const currentItems = this.getItems(document);
       currentItems.forEach((item) => {
@@ -1149,12 +1151,15 @@
       this.itemCount = currentItems.length;
       this.nextURL = this.getNextURL(document, location.href);
       if (!this.nextURL) return false;
-      this.pagination.classList.add("jop-hidden-pagination");
+      if (this.pagination) {
+        this.pagination.classList.add("jop-hidden-pagination");
+      }
       this.statusNode = document.createElement("div");
       this.statusNode.className = "jop-infinite-status";
       this.sentinel = document.createElement("div");
       this.sentinel.className = "jop-infinite-sentinel";
-      this.pagination.insertAdjacentElement("afterend", this.statusNode);
+      const anchorNode = this.pagination || this.container;
+      anchorNode.insertAdjacentElement("afterend", this.statusNode);
       this.statusNode.insertAdjacentElement("afterend", this.sentinel);
       this.setStatus("无限滚动已开启，下拉后自动加载更多");
       if ("IntersectionObserver" in window) {
@@ -1217,6 +1222,7 @@
     }
   }
   function initInfiniteScroll() {
+    if (window.__JOP_INFINITE_LOADER__) return true;
     const config = infiniteScrollSites.find((item) => item.isMatch());
     if (!config) return false;
     const loader = new InfiniteListLoader(config);
@@ -1325,10 +1331,24 @@
     return true;
   }
   function main() {
-    if (mountDetailApp()) {
-      return;
-    }
-    initInfiniteScroll();
+    let retryCount = 0;
+    const tryInit = () => {
+      if (document.querySelector(".jop-app")) {
+        return;
+      }
+      if (mountDetailApp()) {
+        return;
+      }
+      if (initInfiniteScroll()) {
+        return;
+      }
+      if (retryCount >= 30) {
+        return;
+      }
+      retryCount += 1;
+      setTimeout(tryInit, 500);
+    };
+    tryInit();
   }
   main();
 
