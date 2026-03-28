@@ -2,6 +2,15 @@
 
 本文件用于记录每个版本的更新信息。
 
+## 1.5.0
+
+- 新增 AVMOO（avmoo.website）和 AVSOX（avsox.click）站点支持，包括瀑布流/无限滚动和布局优化。
+- 修复 AVMOO/AVSOX 女优页面瀑布流加载时重复插入女优介绍卡的问题。
+- 修复 JavDB 瀑布流开关按钮定位问题，不再依赖 ThePornDude 链接（登录后该链接消失），改为插入 navbar-start 末尾。
+- 修复 JavBus 有码首页布局，调整 movie-box 宽度使每行恢复为 9 个影片。
+- 移除 JavLibrary 详情页外观处理代码（侧边栏移除、内容区扩展等）。
+- 清理已失效的 AVSOX/AVMOO 旧代码（基于 document.title 检测的死代码）。
+
 ## 1.4.0
 
 - 新增瀑布流/无限滚动功能（支持 JavBus、AVSOX/AVMOO、JavLibrary、JavDB 列表页自动加载下一页）。

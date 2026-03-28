@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.4.0
+// @version      1.5.0
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -11,12 +11,18 @@
 // @include      /^https?:\/\/(\w*\.)?javlibrary\.com.*$/
 // @include      /^http.*\/cn\/\?v=jav.*$/
 // @include      /^https?:\/\/(\w*\.)?jav321\.com\/video\/.*$/
+// @include      /^https?:\/\/(\w*\.)?avmoo\.website\/.*$/
+// @include      /^https?:\/\/(\w*\.)?avsox\.click\/.*$/
 // @match        *://*.app.javdb457.com/*
 // @match        *://*.javdb457.com/*
 // @match        *://*.javdb.com/*
 // @match        *://*.javlibrary.com/*
 // @match        *://javlibrary.com/*
 // @match        *://*.v90f.com/*
+// @match        *://*.avmoo.website/*
+// @match        *://avmoo.website/*
+// @match        *://*.avsox.click/*
+// @match        *://avsox.click/*
 // @require      https://update.greasyfork.org/scripts/522123/1511104/tampermonkey%20parallel.js
 // @require      https://cdn.jsdelivr.net/npm/preact@10.25.4/dist/preact.min.js
 // @connect      dmm.co.jp
@@ -42,6 +48,8 @@
 // @connect      javgo.to
 // @connect      javhub.net
 // @connect      javbus.com
+// @connect      avmoo.website
+// @connect      avsox.click
 // @connect      javdb.com
 // @connect      javlibrary.com
 // @connect      www.jav321.com
@@ -53,7 +61,7 @@
 // @updateURL https://raw.githubusercontent.com/andyyippro/userscript-fix/main/JAV%E5%8A%A9%E6%89%8B.user.js
 // ==/UserScript==
 
-(o=>{if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})(' .jop-list{box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:10px;width:100%;height:100%;z-index:1;transition:right .2s ease-in-out;color:#000}.jop-button,.jop-button_def{position:relative;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:3px 10px;border-radius:4px;font-weight:500;font-size:14px;border:1px solid #dcdfe6;color:#606266;cursor:pointer}.jop-button_def{margin:10px 0;width:100px}.jop-button:visited{color:#606266}.jop-button:hover{text-decoration:none;color:#409eff;border:1px solid #c6e2ff;background-color:#ecf5ff}.jop-button_label{position:absolute;font-size:10px;padding:4px;border-radius:4px;top:-13px;right:-10px;line-height:.75;color:#67c23a;border:1px solid #e1f3d8;background:#fff}.jop-button_green{color:#fff!important;background-color:#67c23a}.jop-button_green:hover{color:#fff!important;background-color:#95d475}.jop-button_red{color:#fff!important;background-color:#f56c6c}.jop-button_red:hover{color:#fff!important;background-color:#f89898}.jop-loading{display:inline-block;width:14px;height:14px;margin-right:10px;border:2px dashed #dcdfe6;border-top-color:transparent;border-radius:100%;animation:btnLoading infinite 1s linear}@keyframes btnLoading{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.jop-tag{padding:3px 6px;color:#409eff!important;background:#ecf5ff;border:1px solid #d9ecff;border-radius:4px}.jop-setting{margin-top:20px}.jop-setting-list{display:flex;flex-wrap:wrap}.jop-setting-title{margin:10px 0 5px;font-weight:700}.jop-setting-item{display:flex;height:20px;align-items:center;margin-right:15px;-webkit-user-select:none;user-select:none;cursor:pointer}.db-panel .movie-panel-info div.panel-block{padding:5.5px 12px}.db-panel .jop-app{padding:15px 12px}.lib-panel .jop-app{padding:20px 30px;margin-top:10px}.jav321-panel .jop-app{margin-top:15px;padding-top:15px;border-top:1px solid #eee}input[type=checkbox],input[type=radio]{margin:0 0 0 5px;cursor:pointer}.jop-tooltip-container{position:relative;display:inline-block}.jop-tooltip{position:absolute;bottom:100%;left:50%;transform:translate(-50%);background-color:#333;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;white-space:nowrap;z-index:1000}.jop-setting-label{cursor:pointer}.jop-checkbox{display:inline-flex;align-items:center;cursor:pointer;margin-right:15px;-webkit-user-select:none;user-select:none}.jop-checkbox-input{position:absolute;opacity:0;cursor:pointer}.jop-checkbox-custom{position:relative;display:inline-block;width:16px;height:16px;background-color:#fff;border:1px solid #dcdfe6;border-radius:2px;transition:all .3s}.jop-checkbox-input:checked+.jop-checkbox-custom{background-color:#409eff;border-color:#409eff}.jop-checkbox-input:checked+.jop-checkbox-custom:after{content:"";position:absolute;top:1px;left:4px;width:5px;height:10px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg)}.jop-checkbox-label{margin-left:3px;font-size:14px;color:#606266}.jop-checkbox:hover .jop-checkbox-custom{border-color:#409eff}.jop-waterfall-end{text-align:center;padding:20px;color:#888;font-size:1.2em;letter-spacing:2px}.jop-waterfall-btn{color:blue;font:bold 12px monospace;margin-right:8px;cursor:pointer;text-decoration:none}#waterfall_h{height:initial!important;width:initial!important;flex-direction:row;flex-wrap:wrap;margin:5px 15px!important}#waterfall_h .item{position:relative!important;top:initial!important;left:initial!important;float:left}#waterfall_h .movie-box img{position:absolute;top:-200px;bottom:-200px;left:-200px;right:-200px;margin:auto}#waterfall_h .movie-box .photo-frame{position:relative}#waterfall_h .avatar-box .photo-info p{margin:0 0 2px}#waterfall_h .avatar-box .photo-info{line-height:15px;padding:6px;height:220px}#waterfall_h .avatar-box .photo-frame{margin:10px;text-align:center}#waterfall_h .avatar-box.text-center{height:195px}.videothumblist .videos .video{height:270px;padding:0;margin:4px}.videothumblist .videos .video .title{height:2.8em}.id{height:1.3em;overflow:hidden}#video_info{text-align:left;font:14px Arial;min-width:230px;max-width:260px;padding:0}#video_jacket_info{overflow:hidden}#coverimg{vertical-align:top;overflow:hidden;max-width:50%}#content{padding-top:0}#video_info table{margin-top:6px;border-bottom:1px solid #fff}.info p{line-height:18px!important}.screencap img{width:100%;max-width:1000px} ');
+(o=>{if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})(' .jop-list{box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:10px;width:100%;height:100%;z-index:1;transition:right .2s ease-in-out;color:#000}.jop-button,.jop-button_def{position:relative;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:3px 10px;border-radius:4px;font-weight:500;font-size:14px;border:1px solid #dcdfe6;color:#606266;cursor:pointer}.jop-button_def{margin:10px 0;width:100px}.jop-button:visited{color:#606266}.jop-button:hover{text-decoration:none;color:#409eff;border:1px solid #c6e2ff;background-color:#ecf5ff}.jop-button_label{position:absolute;font-size:10px;padding:4px;border-radius:4px;top:-13px;right:-10px;line-height:.75;color:#67c23a;border:1px solid #e1f3d8;background:#fff}.jop-button_green{color:#fff!important;background-color:#67c23a}.jop-button_green:hover{color:#fff!important;background-color:#95d475}.jop-button_red{color:#fff!important;background-color:#f56c6c}.jop-button_red:hover{color:#fff!important;background-color:#f89898}.jop-loading{display:inline-block;width:14px;height:14px;margin-right:10px;border:2px dashed #dcdfe6;border-top-color:transparent;border-radius:100%;animation:btnLoading infinite 1s linear}@keyframes btnLoading{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.jop-tag{padding:3px 6px;color:#409eff!important;background:#ecf5ff;border:1px solid #d9ecff;border-radius:4px}.jop-setting{margin-top:20px}.jop-setting-list{display:flex;flex-wrap:wrap}.jop-setting-title{margin:10px 0 5px;font-weight:700}.jop-setting-item{display:flex;height:20px;align-items:center;margin-right:15px;-webkit-user-select:none;user-select:none;cursor:pointer}.db-panel .movie-panel-info div.panel-block{padding:5.5px 12px}.db-panel .jop-app{padding:15px 12px}.lib-panel .jop-app{padding:20px 30px;margin-top:10px}.jav321-panel .jop-app{margin-top:15px;padding-top:15px;border-top:1px solid #eee}input[type=checkbox],input[type=radio]{margin:0 0 0 5px;cursor:pointer}.jop-tooltip-container{position:relative;display:inline-block}.jop-tooltip{position:absolute;bottom:100%;left:50%;transform:translate(-50%);background-color:#333;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;white-space:nowrap;z-index:1000}.jop-setting-label{cursor:pointer}.jop-checkbox{display:inline-flex;align-items:center;cursor:pointer;margin-right:15px;-webkit-user-select:none;user-select:none}.jop-checkbox-input{position:absolute;opacity:0;cursor:pointer}.jop-checkbox-custom{position:relative;display:inline-block;width:16px;height:16px;background-color:#fff;border:1px solid #dcdfe6;border-radius:2px;transition:all .3s}.jop-checkbox-input:checked+.jop-checkbox-custom{background-color:#409eff;border-color:#409eff}.jop-checkbox-input:checked+.jop-checkbox-custom:after{content:"";position:absolute;top:1px;left:4px;width:5px;height:10px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg)}.jop-checkbox-label{margin-left:3px;font-size:14px;color:#606266}.jop-checkbox:hover .jop-checkbox-custom{border-color:#409eff}.jop-waterfall-end{text-align:center;padding:20px;color:#888;font-size:1.2em;letter-spacing:2px}.jop-waterfall-btn{color:blue;font:bold 12px monospace;margin-right:8px;cursor:pointer;text-decoration:none}#waterfall_h{height:initial!important;width:initial!important;flex-direction:row;flex-wrap:wrap;margin:5px 15px!important}#waterfall_h .item{position:relative!important;top:initial!important;left:initial!important;float:left}#waterfall_h .movie-box img{position:absolute;top:-200px;bottom:-200px;left:-200px;right:-200px;margin:auto}#waterfall_h .movie-box .photo-frame{position:relative}#waterfall_h .avatar-box .photo-info p{margin:0 0 2px}#waterfall_h .avatar-box .photo-info{line-height:15px;padding:6px;height:220px}#waterfall_h .avatar-box .photo-frame{margin:10px;text-align:center}#waterfall_h .avatar-box.text-center{height:195px}.info p{line-height:18px!important}.screencap img{width:100%;max-width:1000px} ');
 
 (function (preact) {
   'use strict';
@@ -109,15 +117,6 @@
       method() {
         const panel = document.querySelector("#video_jacket_info #video_info, #video_info");
         panel == null ? void 0 : panel.classList.add("lib-panel");
-        // 布局优化：移除侧边栏，扩展内容区域
-        const leftMenu = document.querySelector('#leftmenu');
-        if (leftMenu) leftMenu.remove();
-        const rightCol = document.querySelector('#rightcolumn');
-        if (rightCol) rightCol.style.cssText = 'margin:0;width:100%;padding:initial;';
-        // 设置封面和信息区 ID
-        const tds = document.querySelectorAll("td[style='vertical-align: top;']");
-        if (tds[0]) tds[0].id = 'coverimg';
-        if (tds[1]) tds[1].id = 'javtext';
       }
     },
     {
@@ -186,6 +185,8 @@
         const cont = document.querySelector(this.selector.cont);
         if (cont && items.length) {
           items.forEach(item => {
+            // 跳过重复的女优信息卡（AVMOO/AVSOX 女优页面）
+            if (item.querySelector('.avatar-box')) return;
             item.querySelectorAll('a').forEach(a => { a.target = '_blank'; });
             cont.appendChild(item);
           });
@@ -217,14 +218,16 @@
     const javbusItems = document.querySelectorAll('div#waterfall div.item');
     if (javbusItems.length) {
       const isJavBus = document.querySelector("footer") && document.querySelector("footer").textContent.includes('JavBus');
-      const isAVMOO = /(AVMOO|AVSOX)/.test(document.title);
       if (isJavBus) {
         javbusItems[0].parentElement.parentElement.id = "waterfall_h";
         new Waterfall({ next: 'a#next', item: 'div#waterfall div.item', cont: '.masonry', pagi: '.pagination-lg' });
-      } else if (isAVMOO) {
-        javbusItems[0].parentElement.parentElement.id = "waterfall_h";
-        new Waterfall({ next: 'a[name="nextpage"]', item: 'div#waterfall div.item', cont: '#waterfall', pagi: '.pagination' });
       }
+    }
+    // AVMOO/AVSOX
+    const isAVMOO = /(avmoo|avsox)/i.test(location.hostname);
+    if (isAVMOO && document.querySelectorAll('div#waterfall div.item').length) {
+      document.querySelector('div#waterfall').parentElement.id = "waterfall_h";
+      new Waterfall({ next: '.pagination li:last-child a', item: 'div#waterfall div.item', cont: '#waterfall', pagi: 'ul.pagination' });
     }
     // JavLibrary
     const javlibItems = document.querySelectorAll('div.videos div.video');
@@ -262,17 +265,26 @@
       const dropdown = javbusNav.closest('.dropdown');
       if (dropdown) { const li = document.createElement('li'); li.append(btn); dropdown.after(li); return; }
     }
+    // AVMOO/AVSOX: 插入左侧导航栏
+    const avmooNav = document.querySelector('nav.navbar .nav.navbar-nav:not(.navbar-right)');
+    if (avmooNav && /(avmoo|avsox)/i.test(location.hostname)) {
+      const li = document.createElement('li');
+      li.append(btn);
+      avmooNav.append(li);
+      return;
+    }
     // JavLibrary
     const javlibRight = document.querySelector('.displaymode .right');
     if (javlibRight) { javlibRight.prepend(btn); return; }
-    // JavDB
-    const javdbTabs = document.querySelector('.tabs.is-boxed');
-    if (javdbTabs) { javdbTabs.prepend(btn); return; }
-    // AVSOX/AVMOO - 插入 navbar
-    const avsoxNav = document.querySelector('.active');
-    if (avsoxNav) {
-      const navbar = avsoxNav.closest('.navbar-nav');
-      if (navbar) { const li = document.createElement('li'); li.append(btn); navbar.append(li); return; }
+    // JavDB: 放到顶部导航栏 navbar-start 末尾（ThePornDude 后面，登录后该链接消失也不影响）
+    if (/javdb/i.test(location.hostname)) {
+      const navbarStart = document.querySelector('.navbar-start');
+      if (navbarStart) {
+        btn.classList.add('navbar-item');
+        btn.style.cssText = 'color:blue;font:bold 12px monospace;cursor:pointer;text-decoration:none;';
+        navbarStart.append(btn);
+        return;
+      }
     }
   }
 
@@ -293,14 +305,14 @@
         document.head.append(style);
       } else if (document.querySelectorAll('div#waterfall div.item').length) {
         const style = document.createElement('style');
-        style.textContent = '#waterfall_h .movie-box{width:167px}#waterfall_h .movie-box .photo-info{height:145px}';
+        style.textContent = '#waterfall_h .movie-box{width:164px}#waterfall_h .movie-box .photo-info{height:145px}';
         document.head.append(style);
       }
     }
-    // AVSOX 宽度
-    if (/(AVSOX)/.test(document.title)) {
+    // AVMOO/AVSOX 布局优化：固定 photo-info 高度，保持原始宽度
+    if (/(avmoo|avsox)/i.test(location.hostname) && document.querySelectorAll('div#waterfall div.item').length) {
       const style = document.createElement('style');
-      style.textContent = '#waterfall_h .movie-box{width:354px}#waterfall_h .movie-box .photo-info{height:105px}';
+      style.textContent = '#waterfall_h .movie-box .photo-info{height:145px;overflow:hidden}';
       document.head.append(style);
     }
     // JavDB 列表页: container 宽度和标签优化
