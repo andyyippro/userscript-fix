@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.5.2
+// @version      1.5.3
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -398,7 +398,8 @@
       hostname: "dmm.co.jp",
       url: "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid={{code}}/",
       fetchType: "false",
-      codeFormater: formatFanzaCode
+      codeFormater: formatFanzaCode,
+      codeMatcher: (code) => !isHeyzoCode(code)
     },
     {
       name: "HEYZO",
@@ -1059,7 +1060,7 @@
       !showSetting && /* @__PURE__ */ u$1("div", { className: "jop-button_def", onClick: () => setShowSetting(!showSetting), children: "设置" }),
       showSetting && /* @__PURE__ */ u$1(preact.Fragment, { children: [
         /* @__PURE__ */ u$1("div", { className: "jop-setting", children: [
-          /* @__PURE__ */ u$1(Group, { title: "勾选默认展示", children: siteList2.map((item) => {
+          /* @__PURE__ */ u$1(Group, { title: "勾选默认启动", children: siteList2.map((item) => {
             const isHidden = disables.includes(item.name);
             return /* @__PURE__ */ u$1(
               Checkbox,
