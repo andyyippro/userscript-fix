@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.5.1
+// @version      1.5.2
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -397,10 +397,8 @@
       name: "DMM",
       hostname: "dmm.co.jp",
       url: "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid={{code}}/",
-      // url: "https://video.dmm.co.jp/av/list/?key={{code}}",
-      fetchType: "get",
-      codeFormater: formatFanzaCode,
-      domQuery: {}
+      fetchType: "false",
+      codeFormater: formatFanzaCode
     },
     {
       name: "HEYZO",
