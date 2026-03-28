@@ -2,6 +2,16 @@
 
 本文件用于记录每个版本的更新信息。
 
+## 1.5.1
+
+- 新增 AVMOO 和 AVSOX 详情页跳转在线观看按钮（与 JavDB/JavBus 等站点互相跳转）。
+- 新增其他站点详情页上的 AVMOO 和 AVSOX 跳转按钮。
+- 新增按钮蓝色状态，表示不发请求直接跳转（用于 Cloudflare 拦截等无法验证的站点）。
+- 新增按钮橙色状态，表示请求被 Cloudflare 拦截，点击可手动跳转。
+- 将 JAVLib 按钮改为蓝色（不发请求），因 Cloudflare JS Challenge 导致脚本请求无法到达。
+- 修复 Cloudflare 检测顺序，确保 403 + CF 验证页正确显示橙色而非红色。
+- GM_xmlhttpRequest 添加 anonymous: false，明确声明携带 cookies。
+
 ## 1.5.0
 
 - 新增 AVMOO（avmoo.website）和 AVSOX（avsox.click）站点支持，包括瀑布流/无限滚动和布局优化。
