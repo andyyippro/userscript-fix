@@ -2,6 +2,11 @@
 
 本文件用于记录每个版本的更新信息。
 
+## 1.5.4
+
+- HEYZO 按钮改为发起请求验证（fetchType 从 "false" 改为 "get"）。
+- 添加 @connect heyzo.com 声明，修复 HEYZO 请求被 Tampermonkey 拦截的问题。
+
 ## 1.5.3
 
 - 将 DMM 和 HEYZO 归类为发行片商，两者互斥显示（HEYZO 番号时隐藏 DMM，其他番号时隐藏 HEYZO）。

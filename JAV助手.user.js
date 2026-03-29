@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.5.3
+// @version      1.5.4
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -47,6 +47,7 @@
 // @connect      18av.mm-cg.com
 // @connect      javgo.to
 // @connect      javhub.net
+// @connect      heyzo.com
 // @connect      javbus.com
 // @connect      avmoo.website
 // @connect      avsox.click
@@ -405,7 +406,7 @@
       name: "HEYZO",
       hostname: "heyzo.com",
       url: "https://www.heyzo.com/moviepages/{{code}}/index.html",
-      fetchType: "false",
+      fetchType: "get",
       codeFormater: formatHeyzoCode,
       codeMatcher: isHeyzoCode,
       domQuery: {}
