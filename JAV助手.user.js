@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.5.5
+// @version      1.6.0
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -13,6 +13,8 @@
 // @include      /^https?:\/\/(\w*\.)?jav321\.com\/video\/.*$/
 // @include      /^https?:\/\/(\w*\.)?avmoo\.website\/.*$/
 // @include      /^https?:\/\/(\w*\.)?avsox\.click\/.*$/
+// @match        *://115.com/*
+// @match        *://*.115.com/*
 // @match        *://*.app.javdb457.com/*
 // @match        *://*.javdb457.com/*
 // @match        *://*.javdb.com/*
@@ -55,10 +57,12 @@
 // @connect      javdb.com
 // @connect      javlibrary.com
 // @connect      www.jav321.com
+// @connect      115.com
 // @grant        GM_addStyle
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_xmlhttpRequest
+// @grant        GM_notification
 // @downloadURL https://raw.githubusercontent.com/andyyippro/userscript-fix/main/JAV%E5%8A%A9%E6%89%8B.user.js
 // @updateURL https://raw.githubusercontent.com/andyyippro/userscript-fix/main/JAV%E5%8A%A9%E6%89%8B.user.js
 // ==/UserScript==
@@ -337,6 +341,101 @@
   }
   // ===== 瀑布流/无限滚动 END =====
   var _GM_xmlhttpRequest = /* @__PURE__ */ (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
+  var _GM_notification = /* @__PURE__ */ (() => typeof GM_notification != "undefined" ? GM_notification : void 0)();
+  // ===== 115离线下载 =====
+  function init115UserID() {
+    if (location.host.indexOf('115.com') < 0) return;
+    const savedID = _GM_getValue('jav_user_id', 0);
+    if (savedID !== 0) {
+      console.log('||jop 115 user ID already saved:', savedID);
+      return;
+    }
+    const match = document.cookie.match(/(?:^|;\s*)OOFL=(\d+)/);
+    if (match) {
+      _GM_setValue('jav_user_id', match[1]);
+      console.log('||jop 115 user ID captured:', match[1]);
+      alert('115登录初始化成功！');
+    } else {
+      console.log('||jop 115 未检测到登录状态');
+    }
+  }
+  function handle115OfflineDownload(magnetUrl) {
+    const truncatedUrl = magnetUrl.substr(0, 60);
+    _GM_xmlhttpRequest({
+      method: 'GET',
+      url: 'https://115.com/?ct=offline&ac=space&_=' + Date.now(),
+      anonymous: false,
+      responseType: 'text',
+      onload: (resp) => {
+        const text = resp.responseText || resp.response || '';
+        if (!text || text.indexOf('html') >= 0) {
+          _GM_notification({
+            text: '请先登录115账户后,再离线下载！',
+            title: '115还没有登录',
+            timeout: 3000,
+            onclick: () => { window.open('https://115.com/?mode=login'); }
+          });
+          return;
+        }
+        const tokenData = JSON.parse(text);
+        const userID = _GM_getValue('jav_user_id', 0);
+        _GM_xmlhttpRequest({
+          method: 'POST',
+          url: 'https://115.com/web/lixian/?ct=lixian&ac=add_task_url',
+          anonymous: false,
+          responseType: 'text',
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          data: "url=" + encodeURIComponent(truncatedUrl) + "&uid=" + userID + "&sign=" + tokenData.sign + "&time=" + tokenData.time,
+          onload: (resp2) => {
+            const result = JSON.parse(resp2.responseText || resp2.response || '{}');
+            if (result.state) {
+              _GM_notification({
+                text: '离线任务添加成功, 3秒后刷新本页面',
+                title: '115离线下载',
+                timeout: 3000,
+                onclick: () => { window.open('https://115.com/?tab=offline&mode=wangpan'); }
+              });
+              setTimeout(() => { location.reload(); }, 3000);
+            } else {
+              let errMsg = result.error_msg;
+              if (result.errcode == '911') {
+                errMsg = '你的帐号使用异常，需要在线手工重新验证即可正常使用。';
+              }
+              _GM_notification({
+                text: '请重新打开115, ' + errMsg,
+                title: '115离线失败',
+                timeout: 3000,
+                onclick: () => { window.open('https://115.com/?tab=offline&mode=wangpan'); }
+              });
+            }
+          },
+          onerror: () => { _GM_notification({ text: '网络请求失败', title: '115离线失败', timeout: 3000 }); }
+        });
+      },
+      onerror: () => { _GM_notification({ text: '网络请求失败', title: '115离线失败', timeout: 3000 }); }
+    });
+  }
+  function inject115Buttons() {
+    const magnetItems = document.querySelectorAll('div.magnet-links .item');
+    magnetItems.forEach((item) => {
+      const linkEl = item.querySelector('a');
+      if (!linkEl) return;
+      const magnetUrl = linkEl.href;
+      const buttonsContainer = item.querySelector('.buttons.column');
+      if (!buttonsContainer) return;
+      const btn = document.createElement('button');
+      btn.className = 'button is-info is-small';
+      btn.type = 'button';
+      btn.style.cssText = 'align-self:center;margin-bottom:0;';
+      btn.innerHTML = '&nbsp;115离线&nbsp;';
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        handle115OfflineDownload(magnetUrl);
+      });
+      buttonsContainer.appendChild(btn);
+    });
+  }
+  // ===== 115离线下载 END =====
   const FANZA_NO_PREFIX_CODES = /* @__PURE__ */ new Set([
     // 在这里填写不需要加 1 的 FANZA 完整番号，使用小写 + 5 位数字格式，例如 "abc00001"
   ]);
@@ -1522,6 +1621,9 @@
     ] });
   });
   function main() {
+    // 0. 115 用户 ID 捕获（在 115.com 页面运行）
+    init115UserID();
+
     // 1. 先执行布局优化和瀑布流（列表页+详情页都可用）
     applyLayoutOptimizations();
     insertWaterfallButton();
@@ -1545,6 +1647,11 @@
     panel.append(app);
     preact.render(/* @__PURE__ */ u$1(App, { libItem, CODE }), app);
     console.log("||脚本挂载成功", CODE);
+
+    // 3. 115离线下载按钮（仅 JavDB 详情页）
+    if (libItem.name === 'javdb') {
+      inject115Buttons();
+    }
   }
   main();
 

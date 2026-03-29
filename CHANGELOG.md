@@ -2,6 +2,12 @@
 
 本文件用于记录每个版本的更新信息。
 
+## 1.6.0
+
+- 新增 JavDB 详情页 115 离线下载功能，在每个磁力链接旁添加"115离线"按钮，点击可一键添加到 115 网盘离线任务。
+- 新增 115.com 页面自动捕获用户 ID（通过 OOFL cookie），首次登录后自动初始化。
+- 添加 @match 115.com、@connect 115.com、@grant GM_notification 声明。
+
 ## 1.5.5
 
 - 新增 MGS（mgstage.com）片商按钮，与 DMM、HEYZO 三者互斥显示。
