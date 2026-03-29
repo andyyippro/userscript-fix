@@ -2,6 +2,13 @@
 
 本文件用于记录每个版本的更新信息。
 
+## 1.6.1
+
+- 新增 Nyaa（sukebei.nyaa.si）一键搜索按钮。
+- 新增 Kitty（torrentkitty.one）一键搜索按钮。
+- 新增 BTSOW（btsow.top）一键搜索按钮。
+- 新增 BTDigg（btdig.com）一键搜索按钮。
+
 ## 1.6.0
 
 - 新增 JavDB 详情页 115 离线下载功能，在每个磁力链接旁添加"115离线"按钮，点击可一键添加到 115 网盘离线任务。

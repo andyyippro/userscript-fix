@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.6.0
+// @version      1.6.1
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -784,6 +784,30 @@
         linkQuery: "#waterfall .item a.movie-box",
         titleQuery: "#waterfall .item a.movie-box .photo-info span"
       }
+    },
+    {
+      name: "Nyaa",
+      hostname: "sukebei.nyaa.si",
+      url: "https://sukebei.nyaa.si/?f=0&c=0_0&q={{code}}",
+      fetchType: "false"
+    },
+    {
+      name: "Kitty",
+      hostname: "torrentkitty.one",
+      url: "https://www.torrentkitty.one/search/{{code}}",
+      fetchType: "false"
+    },
+    {
+      name: "BTSOW",
+      hostname: "btsow.top",
+      url: "https://so2.btsow.top/search?key={{code}}&ap=1",
+      fetchType: "false"
+    },
+    {
+      name: "BTDigg",
+      hostname: "btdig.com",
+      url: "https://www.btdig.com/search?q={{code}}",
+      fetchType: "false"
     }
   ];
   const SP_PREFIX = "300";
