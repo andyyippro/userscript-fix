@@ -2,6 +2,15 @@
 
 本文件用于记录每个版本的更新信息。
 
+## 1.5.5
+
+- 新增 MGS（mgstage.com）片商按钮，与 DMM、HEYZO 三者互斥显示。
+  - 番号前缀为 ABP、ABW、ABF、ABS、EZD、THU、PASN 时直接显示 MGS 蓝色按钮，隐藏 DMM 和 HEYZO。
+  - 当 JAV321 返回的 CID 含 348ntr 前缀时，DMM 按钮动态转为 MGS 按钮，跳转 mgstage 对应页面。
+- 添加 @connect mgstage.com 声明。
+- 新增 FANZA 免前缀前缀：URVRSP。
+- 新增 FANZA 条件前缀：DIGI-001~183 加 434 前缀，184 起不加；FCDC-001~068 加 h_114 前缀，069 起不加。
+
 ## 1.5.4
 
 - HEYZO 按钮改为发起请求验证（fetchType 从 "false" 改为 "get"）。

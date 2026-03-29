@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.5.4
+// @version      1.5.5
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -47,6 +47,7 @@
 // @connect      18av.mm-cg.com
 // @connect      javgo.to
 // @connect      javhub.net
+// @connect      mgstage.com
 // @connect      heyzo.com
 // @connect      javbus.com
 // @connect      avmoo.website
@@ -366,7 +367,8 @@
     "ssni",
     "ure",
     "kcda",
-    "mkmp"
+    "mkmp",
+    "urvrsp"
   ]);
   const FANZA_SPECIAL_PREFIXES = /* @__PURE__ */ new Map([
     // 在这里填写需要改写前缀的 FANZA 番号，格式为 [原前缀, 目标前缀]，例如 ["sspo", "h_261"]
@@ -386,7 +388,23 @@
     const baseCode = `${lowerPre}${num.padStart(5, "0")}`;
     const specialPrefix = FANZA_SPECIAL_PREFIXES.get(lowerPre);
     if (specialPrefix) return `${specialPrefix}${baseCode}`;
+    if (lowerPre === "digi") return parseInt(num, 10) <= 183 ? `434${baseCode}` : baseCode;
+    if (lowerPre === "fcdc") return parseInt(num, 10) <= 68 ? `h_114${baseCode}` : baseCode;
     return FANZA_NO_PREFIX_CODES.has(baseCode) || FANZA_NO_PREFIX_PREFIXES.has(lowerPre) ? baseCode : `1${baseCode}`;
+  };
+  const PRESTIGE_PREFIXES = new Set(["abp", "abw", "abf", "abs", "ezd", "thu", "pasn"]);
+  const MGS_CID_PREFIXES = ["348ntr"];
+  const isPrestigeCode = (code) => {
+    const pre = code.split("-")[0];
+    return pre ? PRESTIGE_PREFIXES.has(pre.toLowerCase()) : false;
+  };
+  const checkMgsCidPrefix = (cid) => {
+    if (!cid) return null;
+    const lower = cid.toLowerCase();
+    const matched = MGS_CID_PREFIXES.find((p) => lower.startsWith(p));
+    if (!matched) return null;
+    const numPrefix = matched.match(/^(\d+)/);
+    return numPrefix ? numPrefix[1] : null;
   };
   const isHeyzoCode = (code) => /^HEYZO-\d+$/i.test(code);
   const formatHeyzoCode = (preCode) => {
@@ -400,7 +418,7 @@
       url: "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid={{code}}/",
       fetchType: "false",
       codeFormater: formatFanzaCode,
-      codeMatcher: (code) => !isHeyzoCode(code)
+      codeMatcher: (code) => !isHeyzoCode(code) && !isPrestigeCode(code)
     },
     {
       name: "HEYZO",
@@ -410,6 +428,13 @@
       codeFormater: formatHeyzoCode,
       codeMatcher: isHeyzoCode,
       domQuery: {}
+    },
+    {
+      name: "MGS",
+      hostname: "mgstage.com",
+      url: "https://www.mgstage.com/product/product_detail/{{code}}/",
+      fetchType: "false",
+      codeMatcher: isPrestigeCode
     },
     {
       name: "Jable",
@@ -1353,6 +1378,19 @@
             setFetchRes(void 0);
             return;
           }
+          const mgsNumPrefix = checkMgsCidPrefix(target.requestCode);
+          if (mgsNumPrefix) {
+            const mgsCode = mgsNumPrefix + CODE;
+            const mgsLink = `https://www.mgstage.com/product/product_detail/${mgsCode}/`;
+            setFetchRes({
+              isSuccess: true,
+              resultLink: mgsLink,
+              originLink: mgsLink,
+              mgsOverride: true
+            });
+            setLoading(false);
+            return;
+          }
           setLoading(true);
           const res = await fetcher({
             siteItem,
@@ -1410,7 +1448,7 @@
     const tag = multipleFlag ? "多结果" : fetchRes == null ? void 0 : fetchRes.tag;
     const originLink = (fetchRes == null ? void 0 : fetchRes.originLink) || defaultOriginLink;
     const resultLink = multipleFlag ? originLink : fetchRes == null ? void 0 : fetchRes.resultLink;
-    const colorClass = siteItem.fetchType === "false" ? "jop-button_blue " : (fetchRes == null ? void 0 : fetchRes.isCloudflare) ? "jop-button_orange " : (fetchRes == null ? void 0 : fetchRes.isSuccess) ? "jop-button_green " : "jop-button_red ";
+    const colorClass = siteItem.fetchType === "false" || (fetchRes == null ? void 0 : fetchRes.mgsOverride) ? "jop-button_blue " : (fetchRes == null ? void 0 : fetchRes.isCloudflare) ? "jop-button_orange " : (fetchRes == null ? void 0 : fetchRes.isSuccess) ? "jop-button_green " : "jop-button_red ";
     if (hiddenError && fetchRes && !loading && !(fetchRes == null ? void 0 : fetchRes.isSuccess)) {
       return /* @__PURE__ */ u$1(preact.Fragment, {});
     }
@@ -1427,7 +1465,7 @@
         },
         children: [
           tag && /* @__PURE__ */ u$1("div", { className: "jop-button_label", children: tag }),
-          /* @__PURE__ */ u$1("span", { children: name })
+          /* @__PURE__ */ u$1("span", { children: (fetchRes == null ? void 0 : fetchRes.mgsOverride) ? "MGS" : name })
         ]
       }
     );

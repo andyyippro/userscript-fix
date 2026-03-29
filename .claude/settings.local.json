@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(node -c \"D:/AI/GIT/07/userscript-fix/JAV助手.user.js\")",
-      "WebFetch(domain:www.dmm.co.jp)"
+      "WebFetch(domain:www.dmm.co.jp)",
+      "WebFetch(domain:www.mgstage.com)"
     ]
   }
 }
