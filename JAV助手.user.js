@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.7.0
+// @version      1.6.1
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -25,7 +25,6 @@
 // @match        *://avmoo.website/*
 // @match        *://*.avsox.click/*
 // @match        *://avsox.click/*
-// @match        *://51acg.buzz/*
 // @require      https://update.greasyfork.org/scripts/522123/1511104/tampermonkey%20parallel.js
 // @require      https://cdn.jsdelivr.net/npm/preact@10.25.4/dist/preact.min.js
 // @connect      dmm.co.jp
@@ -1645,175 +1644,7 @@
       )
     ] });
   });
-  // ========== 51acg.buzz 登录修复（绕过 CrxMouse 手势扩展冲突） ==========
-  // 根本原因：Discuz 的 ajaxpost 通过隐藏 iframe 提交表单并读取响应，
-  // CrxMouse 的内容脚本注入到该 iframe 中，破坏了响应解析，导致登录卡在"请稍候"
-  // 方案：完全绕过 ajaxpost/iframe，用 fetch 直接发送登录请求并处理响应
-
-  const CRXFIX_STYLES = `
-    .crxfix-btn { display:inline-block; padding:8px 24px; background:#09f; color:#fff !important;
-      border:none; border-radius:4px; cursor:pointer; font-size:14px; margin:8px 4px 0 0;
-      user-select:none; -webkit-user-select:none; }
-    .crxfix-btn:hover { background:#07d; }
-    .crxfix-msg { padding:10px; margin-top:8px; border-radius:4px; font-size:13px; }
-    .crxfix-msg.ok { background:#d4edda; color:#155724; }
-    .crxfix-msg.err { background:#f8d7da; color:#721c24; }
-    .crxfix-msg.info { background:#fff3cd; color:#856404; }
-  `;
-
-  /** 从 Discuz 响应 HTML 中提取跳转 URL 和消息文本 */
-  function parseDiscuzResponse(html) {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    let redirectUrl = '';
-
-    // 1. 从 script 标签中提取 location.href 或 succeedhandle
-    for (const s of doc.querySelectorAll('script')) {
-      const text = s.textContent;
-      const locMatch = text.match(/location\.href\s*=\s*['"]([^'"]+)['"]/);
-      if (locMatch) { redirectUrl = locMatch[1]; break; }
-      const succMatch = text.match(/succeedhandle_\w+\s*\(\s*['"]([^'"]+)['"]/);
-      if (succMatch) { redirectUrl = succMatch[1]; break; }
-    }
-
-    // 2. 从 meta refresh 中提取
-    if (!redirectUrl) {
-      const meta = doc.querySelector('meta[http-equiv="refresh"]');
-      if (meta) {
-        const urlMatch = meta.content.match(/url=(.+)/i);
-        if (urlMatch) redirectUrl = urlMatch[1].trim();
-      }
-    }
-
-    // 3. 从消息区域的链接中提取
-    if (!redirectUrl) {
-      for (const a of doc.querySelectorAll('#messagetext a[href], .alert_right a[href]')) {
-        if (a.href && !a.href.includes('javascript:')) { redirectUrl = a.href; break; }
-      }
-    }
-
-    // 处理相对 URL
-    if (redirectUrl && !redirectUrl.startsWith('http')) {
-      redirectUrl = new URL(redirectUrl, location.href).href;
-    }
-
-    const messageEl = doc.getElementById('messagetext') || doc.querySelector('.alert_right, .alert_error, .alert_info');
-    const messageText = messageEl ? messageEl.textContent.trim() : '';
-    const hasSuccessHint = html.includes('succeedhandle') || html.includes('succeed');
-
-    return { redirectUrl, messageText, hasSuccessHint };
-  }
-
-  /** 给元素绑定可穿透 CrxMouse 拦截的点击事件 */
-  function bindAntiGestureClick(el, handler) {
-    ['pointerdown', 'mousedown', 'click', 'touchstart'].forEach(evtName => {
-      el.addEventListener(evtName, e => {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        handler();
-      }, true);
-    });
-    el.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); }
-    });
-  }
-
-  function fix51acgLogin() {
-    const form = document.querySelector('form[id^="loginform_"]');
-    if (!form || form.dataset.crxFixed) return;
-    form.dataset.crxFixed = 'true';
-
-    // 仅在登录页注入样式
-    const style = document.createElement('style');
-    style.textContent = CRXFIX_STYLES;
-    (document.head || document.documentElement).appendChild(style);
-
-    // 消息显示区域
-    const msgEl = document.createElement('div');
-    msgEl.className = 'crxfix-msg info';
-    msgEl.textContent = '✔ 登录修复已加载（绕过CrxMouse冲突）';
-    form.appendChild(msgEl);
-    const showMsg = (text, type) => { msgEl.textContent = text; msgEl.className = 'crxfix-msg ' + type; };
-
-    // 核心：用 fetch 直接提交登录表单
-    let loginInProgress = false;
-    const doFetchLogin = async () => {
-      if (loginInProgress) return;
-      loginInProgress = true;
-      showMsg('正在登录...', 'info');
-      try {
-        const formData = new FormData(form);
-        if (!formData.has('loginsubmit')) formData.append('loginsubmit', 'yes');
-
-        const resp = await fetch(form.action || location.href, {
-          method: 'POST', body: formData, credentials: 'same-origin',
-        });
-        const html = await resp.text();
-        const { redirectUrl, messageText, hasSuccessHint } = parseDiscuzResponse(html);
-
-        if (redirectUrl) {
-          showMsg('✔ 登录成功！正在跳转... ' + (messageText || ''), 'ok');
-          setTimeout(() => { location.href = redirectUrl; }, 1000);
-        } else if (messageText) {
-          showMsg('✘ ' + messageText, 'err');
-        } else if (hasSuccessHint) {
-          showMsg('✔ 登录成功！正在刷新...', 'ok');
-          setTimeout(() => { location.reload(); }, 1000);
-        } else {
-          showMsg('⚠ 未知响应，请检查用户名密码和验证码', 'err');
-        }
-      } catch(e) {
-        showMsg('✘ 请求失败: ' + e.message, 'err');
-      } finally {
-        loginInProgress = false;
-      }
-    };
-
-    // 触发方式 1: Enter 键
-    form.querySelectorAll('input[type="text"], input[type="password"]').forEach(input => {
-      input.addEventListener('keydown', e => {
-        if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); doFetchLogin(); }
-      }, true);
-    });
-
-    // 触发方式 2: 备用登录按钮（用 div 避免 CrxMouse 拦截 button）
-    const backupBtn = document.createElement('div');
-    backupBtn.className = 'crxfix-btn';
-    backupBtn.textContent = '▶ 登录';
-    backupBtn.setAttribute('tabindex', '0');
-    backupBtn.setAttribute('role', 'button');
-    bindAntiGestureClick(backupBtn, doFetchLogin);
-
-    const submitBtn = form.querySelector('button[type="submit"]');
-    if (submitBtn && submitBtn.parentNode) {
-      submitBtn.parentNode.insertBefore(backupBtn, submitBtn.nextSibling);
-    } else {
-      form.appendChild(backupBtn);
-    }
-
-    // 触发方式 3: 原始按钮也加监听
-    if (submitBtn) {
-      ['pointerdown', 'mousedown'].forEach(evtName => {
-        submitBtn.addEventListener(evtName, e => {
-          e.stopImmediatePropagation();
-          doFetchLogin();
-        }, true);
-      });
-    }
-
-    // 阻止原始 form 提交（避免走 iframe 通道）
-    form.addEventListener('submit', e => { e.preventDefault(); doFetchLogin(); }, true);
-  }
-
   function main() {
-    if (location.hostname === '51acg.buzz') {
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', fix51acgLogin);
-      } else {
-        fix51acgLogin();
-      }
-      return;
-    }
-
     // 0. 115 用户 ID 捕获（在 115.com 页面运行）
     init115UserID();
 

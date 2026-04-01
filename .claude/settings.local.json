@@ -3,9 +3,7 @@
     "allow": [
       "Bash(node -c \"D:/AI/GIT/07/userscript-fix/JAV助手.user.js\")",
       "WebFetch(domain:www.dmm.co.jp)",
-      "WebFetch(domain:www.mgstage.com)",
-      "WebFetch(domain:blog.csdn.net)",
-      "WebFetch(domain:zhuanlan.zhihu.com)"
+      "WebFetch(domain:www.mgstage.com)"
     ]
   }
 }
