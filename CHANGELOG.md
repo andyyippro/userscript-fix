@@ -2,6 +2,16 @@
 
 本文件用于记录每个版本的更新信息。
 
+## 1.7.0
+
+- 新增 51acg.buzz（91次元小屋）登录页 CrxMouse 手势扩展冲突修复。
+  - 根本原因：Discuz 的 ajaxpost 通过隐藏 iframe 提交表单并读取响应，CrxMouse 的内容脚本注入到该 iframe 中，破坏了响应解析，导致登录卡在"请稍候..."。
+  - 解决方案：完全绕过 ajaxpost/iframe 机制，改用 fetch API 直接提交登录表单，通过 DOMParser 解析 Discuz 响应并处理跳转。
+  - 添加备用登录按钮（div 实现），穿透 CrxMouse 对 button 元素的事件拦截。
+  - 支持 Enter 键、备用按钮、原始按钮三种触发方式，均可正常登录。
+  - 添加防重复提交保护。
+- 添加 @match 51acg.buzz 声明。
+
 ## 1.6.1
 
 - 新增 Nyaa（sukebei.nyaa.si）一键搜索按钮。
