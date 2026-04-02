@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.6.2
+// @version      1.6.3
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -69,7 +69,7 @@
 // @updateURL https://raw.githubusercontent.com/andyyippro/userscript-fix/main/JAV%E5%8A%A9%E6%89%8B.user.js
 // ==/UserScript==
 
-(o=>{if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})(' .jop-list{box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:10px;width:100%;height:100%;z-index:1;transition:right .2s ease-in-out;color:#000}.jop-button,.jop-button_def{position:relative;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:3px 10px;border-radius:4px;font-weight:500;font-size:14px;border:1px solid #dcdfe6;color:#606266;cursor:pointer}.jop-button_def{margin:10px 0;width:100px}.jop-button:visited{color:#606266}.jop-button:hover{text-decoration:none;color:#409eff;border:1px solid #c6e2ff;background-color:#ecf5ff}.jop-button_label{position:absolute;font-size:10px;padding:4px;border-radius:4px;top:-13px;right:-10px;line-height:.75;color:#67c23a;border:1px solid #e1f3d8;background:#fff}.jop-button_green{color:#fff!important;background-color:#67c23a}.jop-button_green:hover{color:#fff!important;background-color:#95d475}.jop-button_red{color:#fff!important;background-color:#f56c6c}.jop-button_red:hover{color:#fff!important;background-color:#f89898}.jop-button_blue{color:#fff!important;background-color:#409eff}.jop-button_blue:hover{color:#fff!important;background-color:#66b1ff}.jop-button_orange{color:#fff!important;background-color:#e6a23c}.jop-button_orange:hover{color:#fff!important;background-color:#ebb563}.jop-loading{display:inline-block;width:14px;height:14px;margin-right:10px;border:2px dashed #dcdfe6;border-top-color:transparent;border-radius:100%;animation:btnLoading infinite 1s linear}@keyframes btnLoading{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.jop-tag{padding:3px 6px;color:#409eff!important;background:#ecf5ff;border:1px solid #d9ecff;border-radius:4px}.jop-setting{margin-top:20px}.jop-setting-list{display:flex;flex-wrap:wrap}.jop-setting-title{margin:10px 0 5px;font-weight:700}.jop-setting-item{display:flex;height:20px;align-items:center;margin-right:15px;-webkit-user-select:none;user-select:none;cursor:pointer}.db-panel .movie-panel-info div.panel-block{padding:5.5px 12px}.db-panel .jop-app{padding:15px 12px}.lib-panel .jop-app{padding:20px 30px;margin-top:10px}.jav321-panel .jop-app{margin-top:15px;padding-top:15px;border-top:1px solid #eee}input[type=checkbox],input[type=radio]{margin:0 0 0 5px;cursor:pointer}.jop-tooltip-container{position:relative;display:inline-block}.jop-tooltip{position:absolute;bottom:100%;left:50%;transform:translate(-50%);background-color:#333;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;white-space:nowrap;z-index:1000}.jop-setting-label{cursor:pointer}.jop-checkbox{display:inline-flex;align-items:center;cursor:pointer;margin-right:15px;-webkit-user-select:none;user-select:none}.jop-checkbox-input{position:absolute;opacity:0;cursor:pointer}.jop-checkbox-custom{position:relative;display:inline-block;width:16px;height:16px;background-color:#fff;border:1px solid #dcdfe6;border-radius:2px;transition:all .3s}.jop-checkbox-input:checked+.jop-checkbox-custom{background-color:#409eff;border-color:#409eff}.jop-checkbox-input:checked+.jop-checkbox-custom:after{content:"";position:absolute;top:1px;left:4px;width:5px;height:10px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg)}.jop-checkbox-label{margin-left:3px;font-size:14px;color:#606266}.jop-checkbox:hover .jop-checkbox-custom{border-color:#409eff}.jop-waterfall-end{text-align:center;padding:20px;color:#888;font-size:1.2em;letter-spacing:2px}.jop-waterfall-btn{color:blue;font:bold 12px monospace;margin-right:8px;cursor:pointer;text-decoration:none}#waterfall_h{height:initial!important;width:initial!important;flex-direction:row;flex-wrap:wrap;margin:5px 15px!important}#waterfall_h .item{position:relative!important;top:initial!important;left:initial!important;float:left}#waterfall_h .movie-box img{position:absolute;top:-200px;bottom:-200px;left:-200px;right:-200px;margin:auto}#waterfall_h .movie-box .photo-frame{position:relative}#waterfall_h .avatar-box .photo-info p{margin:0 0 2px}#waterfall_h .avatar-box .photo-info{line-height:15px;padding:6px;height:220px}#waterfall_h .avatar-box .photo-frame{margin:10px;text-align:center}#waterfall_h .avatar-box.text-center{height:195px}.info p{line-height:18px!important}.screencap img{width:100%;max-width:1000px}.jop-preview-container{display:flex!important;flex-direction:row!important;gap:6px;margin-top:4px}.jop-preview-img{width:200px;height:auto;max-height:200px;object-fit:cover;border-radius:2px} ');
+(o=>{if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})(' .jop-list{box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:10px;width:100%;height:100%;z-index:1;transition:right .2s ease-in-out;color:#000}.jop-button,.jop-button_def{position:relative;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:3px 10px;border-radius:4px;font-weight:500;font-size:14px;border:1px solid #dcdfe6;color:#606266;cursor:pointer}.jop-button_def{margin:10px 0;width:100px}.jop-button:visited{color:#606266}.jop-button:hover{text-decoration:none;color:#409eff;border:1px solid #c6e2ff;background-color:#ecf5ff}.jop-button_label{position:absolute;font-size:10px;padding:4px;border-radius:4px;top:-13px;right:-10px;line-height:.75;color:#67c23a;border:1px solid #e1f3d8;background:#fff}.jop-button_green{color:#fff!important;background-color:#67c23a}.jop-button_green:hover{color:#fff!important;background-color:#95d475}.jop-button_red{color:#fff!important;background-color:#f56c6c}.jop-button_red:hover{color:#fff!important;background-color:#f89898}.jop-button_blue{color:#fff!important;background-color:#409eff}.jop-button_blue:hover{color:#fff!important;background-color:#66b1ff}.jop-button_orange{color:#fff!important;background-color:#e6a23c}.jop-button_orange:hover{color:#fff!important;background-color:#ebb563}.jop-loading{display:inline-block;width:14px;height:14px;margin-right:10px;border:2px dashed #dcdfe6;border-top-color:transparent;border-radius:100%;animation:btnLoading infinite 1s linear}@keyframes btnLoading{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.jop-tag{padding:3px 6px;color:#409eff!important;background:#ecf5ff;border:1px solid #d9ecff;border-radius:4px}.jop-setting{margin-top:20px}.jop-setting-list{display:flex;flex-wrap:wrap}.jop-setting-title{margin:10px 0 5px;font-weight:700}.jop-setting-item{display:flex;height:20px;align-items:center;margin-right:15px;-webkit-user-select:none;user-select:none;cursor:pointer}.db-panel .movie-panel-info div.panel-block{padding:5.5px 12px}.db-panel .jop-app{padding:15px 12px}.lib-panel .jop-app{padding:20px 30px;margin-top:10px}.jav321-panel .jop-app{margin-top:15px;padding-top:15px;border-top:1px solid #eee}input[type=checkbox],input[type=radio]{margin:0 0 0 5px;cursor:pointer}.jop-tooltip-container{position:relative;display:inline-block}.jop-tooltip{position:absolute;bottom:100%;left:50%;transform:translate(-50%);background-color:#333;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;white-space:nowrap;z-index:1000}.jop-setting-label{cursor:pointer}.jop-checkbox{display:inline-flex;align-items:center;cursor:pointer;margin-right:15px;-webkit-user-select:none;user-select:none}.jop-checkbox-input{position:absolute;opacity:0;cursor:pointer}.jop-checkbox-custom{position:relative;display:inline-block;width:16px;height:16px;background-color:#fff;border:1px solid #dcdfe6;border-radius:2px;transition:all .3s}.jop-checkbox-input:checked+.jop-checkbox-custom{background-color:#409eff;border-color:#409eff}.jop-checkbox-input:checked+.jop-checkbox-custom:after{content:"";position:absolute;top:1px;left:4px;width:5px;height:10px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg)}.jop-checkbox-label{margin-left:3px;font-size:14px;color:#606266}.jop-checkbox:hover .jop-checkbox-custom{border-color:#409eff}.jop-waterfall-end{text-align:center;padding:20px;color:#888;font-size:1.2em;letter-spacing:2px}.jop-waterfall-btn{color:blue;font:bold 12px monospace;margin-right:8px;cursor:pointer;text-decoration:none}#waterfall_h{height:initial!important;width:initial!important;flex-direction:row;flex-wrap:wrap;margin:5px 15px!important}#waterfall_h .item{position:relative!important;top:initial!important;left:initial!important;float:left}#waterfall_h .movie-box img{position:absolute;top:-200px;bottom:-200px;left:-200px;right:-200px;margin:auto}#waterfall_h .movie-box .photo-frame{position:relative}#waterfall_h .avatar-box .photo-info p{margin:0 0 2px}#waterfall_h .avatar-box .photo-info{line-height:15px;padding:6px;height:220px}#waterfall_h .avatar-box .photo-frame{margin:10px;text-align:center}#waterfall_h .avatar-box.text-center{height:195px}.info p{line-height:18px!important}.screencap img{width:100%;max-width:1000px}.jop-preview-container{display:flex!important;flex-direction:row!important;gap:10px;margin-top:4px} ');
 
 (function (preact) {
   'use strict';
@@ -364,7 +364,7 @@
             const file = img.getAttribute('file');
             return file && !file.includes('static') && !file.includes('hrline');
           })
-          .slice(0, 3);
+          .slice(0, 4);
 
         if (!imgs.length) continue;
 
@@ -372,14 +372,15 @@
         newTbody.className = 'jop-imagePreview';
         const tr = document.createElement('tr');
         const td = document.createElement('td');
+        td.colSpan = 5;
         const container = document.createElement('div');
-        container.className = 'jop-preview-container';
+        container.style.display = 'flex';
 
         imgs.forEach(imgEl => {
           const img = document.createElement('img');
           img.src = imgEl.getAttribute('file');
-          img.className = 'jop-preview-img';
           img.loading = 'lazy';
+          img.style.cssText = 'width:300px;height:auto;margin-right:10px';
           container.appendChild(img);
         });
 
@@ -393,6 +394,19 @@
     }
   }
   // ===== sehuatang 图片预览 END =====
+
+  // ===== sehuatang 强制宽版 + 样式优化（仅列表/帖子页） =====
+  if (/sehuatang/i.test(location.hostname) && /mod=(forumdisplay|viewthread)/.test(location.href)) {
+    GM_addStyle(`
+      .wp { width: 98% !important; }
+      #ct { margin: 0 !important; width: 100% !important; }
+      .s.xst { font-size: 20px; font-weight: 700; font-family: 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei New', 'STHeiti Light', sans-serif; }
+      a { font-size: 14px; }
+      a:hover { text-decoration: underline; }
+      td.by, td.by *, td.num, td.num * { font-size: 14px !important; }
+    `);
+  }
+  // ===== sehuatang 强制宽版 + 样式优化 END =====
 
   var _GM_xmlhttpRequest = /* @__PURE__ */ (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
   var _GM_notification = /* @__PURE__ */ (() => typeof GM_notification != "undefined" ? GM_notification : void 0)();
