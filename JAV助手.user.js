@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.6.3
+// @version      1.6.4
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -343,16 +343,50 @@
   }
   // ===== 瀑布流/无限滚动 END =====
 
-  // ===== sehuatang 图片预览 =====
-  async function initSehuatangPreview() {
+  // ===== sehuatang 购买次数 + 图片预览 =====
+  async function getViewpayments(tid) {
+    try {
+      const url = `/forum.php?mod=misc&action=viewpayments&tid=${tid}&infloat=yes&handlekey=pay&inajax=1&ajaxtarget=fwin_content_pay`;
+      const res = await fetch(url, { credentials: 'same-origin' });
+      if (!res.ok) return 0;
+      const text = await res.text();
+      const xml = new DOMParser().parseFromString(text, 'text/xml');
+      const htmlContent = xml.querySelector('root').textContent;
+      if (htmlContent.includes('目前没有用户购买此主题') || htmlContent.includes('alert_error')) return 0;
+      const doc = new DOMParser().parseFromString(htmlContent, 'text/html');
+      const table = doc.querySelector('table.list');
+      if (!table) return 0;
+      return table.querySelectorAll('tr').length - 1;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  async function initSehuatangEnhance() {
     if (!/sehuatang/i.test(location.hostname)) return;
 
-    const postLinks = document.querySelectorAll('.s.xst');
+    const isSearchPage = new URLSearchParams(location.search).get('mod') === 'forum';
+    const postLinks = document.querySelectorAll(isSearchPage ? '#threadlist li.pbw h3.xs3 a' : '.s.xst');
     if (!postLinks.length) return;
 
     for (let link of postLinks) {
-      const tbody = link.closest('tbody');
-      if (!tbody || (tbody.nextElementSibling && tbody.nextElementSibling.classList.contains('jop-imagePreview'))) continue;
+      const tidMatch = link.href.match(/tid=(\d+)/) || link.href.match(/thread-(\d+)-/);
+      if (!tidMatch) continue;
+      const tid = tidMatch[1];
+
+      // 购买次数
+      if (!link.parentNode.querySelector('.jop-buyinfo')) {
+        const count = await getViewpayments(tid);
+        const span = document.createElement('span');
+        span.className = 'jop-buyinfo';
+        span.style.cssText = `font-size:${isSearchPage ? '16px' : '20px'};font-weight:bold;color:red;`;
+        span.textContent = ` [购买${count}次]`;
+        link.parentNode.insertBefore(span, link.nextSibling);
+      }
+
+      // 图片预览
+      const container = isSearchPage ? link.closest('li.pbw') : link.closest('tbody');
+      if (!container || container.querySelector('.jop-imagePreview')) continue;
 
       try {
         const res = await fetch(link.href, { credentials: 'same-origin' });
@@ -364,42 +398,50 @@
             const file = img.getAttribute('file');
             return file && !file.includes('static') && !file.includes('hrline');
           })
-          .slice(0, 4);
+          .slice(0, 3);
 
         if (!imgs.length) continue;
 
-        const newTbody = document.createElement('tbody');
-        newTbody.className = 'jop-imagePreview';
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = 5;
-        const container = document.createElement('div');
-        container.style.display = 'flex';
+        const imgContainer = document.createElement('div');
+        imgContainer.style.display = 'flex';
 
         imgs.forEach(imgEl => {
           const img = document.createElement('img');
           img.src = imgEl.getAttribute('file');
           img.loading = 'lazy';
           img.style.cssText = 'width:300px;height:auto;margin-right:10px';
-          container.appendChild(img);
+          imgContainer.appendChild(img);
         });
 
-        td.appendChild(container);
-        tr.appendChild(td);
-        newTbody.appendChild(tr);
-        tbody.after(newTbody);
+        if (isSearchPage) {
+          const previewDiv = document.createElement('div');
+          previewDiv.className = 'jop-imagePreview';
+          previewDiv.appendChild(imgContainer);
+          container.appendChild(previewDiv);
+        } else {
+          const newTbody = document.createElement('tbody');
+          newTbody.className = 'jop-imagePreview';
+          const tr = document.createElement('tr');
+          const td = document.createElement('td');
+          td.colSpan = 5;
+          td.appendChild(imgContainer);
+          tr.appendChild(td);
+          newTbody.appendChild(tr);
+          container.after(newTbody);
+        }
       } catch (e) {
         console.error('||jop sehuatang preview error', e);
       }
     }
   }
-  // ===== sehuatang 图片预览 END =====
+  // ===== sehuatang 购买次数 + 图片预览 END =====
 
   // ===== sehuatang 强制宽版 + 样式优化（仅列表/帖子页） =====
-  if (/sehuatang/i.test(location.hostname) && /mod=(forumdisplay|viewthread)/.test(location.href)) {
+  if (/sehuatang/i.test(location.hostname) && /mod=(forumdisplay|viewthread|forum)\b/.test(location.href)) {
+    const isSearchPage = new URLSearchParams(location.search).get('mod') === 'forum';
     GM_addStyle(`
-      .wp { width: 98% !important; }
-      #ct { margin: 0 !important; width: 100% !important; }
+      .wp { width: 98% !important; margin: 0 auto !important; }
+      #ct { margin: 0 auto !important; width: 100% !important; ${isSearchPage ? 'padding: 0 2% !important; box-sizing: border-box !important;' : ''} }
       .s.xst { font-size: 20px; font-weight: 700; font-family: 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei New', 'STHeiti Light', sans-serif; }
       a { font-size: 14px; }
       a:hover { text-decoration: underline; }
@@ -1720,7 +1762,7 @@
     applyLayoutOptimizations();
     insertWaterfallButton();
     initWaterfall();
-    initSehuatangPreview();
+    initSehuatangEnhance();
 
     // 2. 尝试匹配详情页（原有搜索链接逻辑）
     const libItem = libSites.find((item) => document.querySelector(item.identifier));
