@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.6.4
+// @version      1.7.0
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -58,6 +58,7 @@
 // @connect      avsox.click
 // @connect      javdb.com
 // @connect      javlibrary.com
+// @connect      translate-pa.googleapis.com
 // @connect      www.jav321.com
 // @connect      115.com
 // @grant        GM_addStyle
@@ -69,7 +70,7 @@
 // @updateURL https://raw.githubusercontent.com/andyyippro/userscript-fix/main/JAV%E5%8A%A9%E6%89%8B.user.js
 // ==/UserScript==
 
-(o=>{if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})(' .jop-list{box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:10px;width:100%;height:100%;z-index:1;transition:right .2s ease-in-out;color:#000}.jop-button,.jop-button_def{position:relative;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:3px 10px;border-radius:4px;font-weight:500;font-size:14px;border:1px solid #dcdfe6;color:#606266;cursor:pointer}.jop-button_def{margin:10px 0;width:100px}.jop-button:visited{color:#606266}.jop-button:hover{text-decoration:none;color:#409eff;border:1px solid #c6e2ff;background-color:#ecf5ff}.jop-button_label{position:absolute;font-size:10px;padding:4px;border-radius:4px;top:-13px;right:-10px;line-height:.75;color:#67c23a;border:1px solid #e1f3d8;background:#fff}.jop-button_green{color:#fff!important;background-color:#67c23a}.jop-button_green:hover{color:#fff!important;background-color:#95d475}.jop-button_red{color:#fff!important;background-color:#f56c6c}.jop-button_red:hover{color:#fff!important;background-color:#f89898}.jop-button_blue{color:#fff!important;background-color:#409eff}.jop-button_blue:hover{color:#fff!important;background-color:#66b1ff}.jop-button_orange{color:#fff!important;background-color:#e6a23c}.jop-button_orange:hover{color:#fff!important;background-color:#ebb563}.jop-loading{display:inline-block;width:14px;height:14px;margin-right:10px;border:2px dashed #dcdfe6;border-top-color:transparent;border-radius:100%;animation:btnLoading infinite 1s linear}@keyframes btnLoading{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.jop-tag{padding:3px 6px;color:#409eff!important;background:#ecf5ff;border:1px solid #d9ecff;border-radius:4px}.jop-setting{margin-top:20px}.jop-setting-list{display:flex;flex-wrap:wrap}.jop-setting-title{margin:10px 0 5px;font-weight:700}.jop-setting-item{display:flex;height:20px;align-items:center;margin-right:15px;-webkit-user-select:none;user-select:none;cursor:pointer}.db-panel .movie-panel-info div.panel-block{padding:5.5px 12px}.db-panel .jop-app{padding:15px 12px}.lib-panel .jop-app{padding:20px 30px;margin-top:10px}.jav321-panel .jop-app{margin-top:15px;padding-top:15px;border-top:1px solid #eee}input[type=checkbox],input[type=radio]{margin:0 0 0 5px;cursor:pointer}.jop-tooltip-container{position:relative;display:inline-block}.jop-tooltip{position:absolute;bottom:100%;left:50%;transform:translate(-50%);background-color:#333;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;white-space:nowrap;z-index:1000}.jop-setting-label{cursor:pointer}.jop-checkbox{display:inline-flex;align-items:center;cursor:pointer;margin-right:15px;-webkit-user-select:none;user-select:none}.jop-checkbox-input{position:absolute;opacity:0;cursor:pointer}.jop-checkbox-custom{position:relative;display:inline-block;width:16px;height:16px;background-color:#fff;border:1px solid #dcdfe6;border-radius:2px;transition:all .3s}.jop-checkbox-input:checked+.jop-checkbox-custom{background-color:#409eff;border-color:#409eff}.jop-checkbox-input:checked+.jop-checkbox-custom:after{content:"";position:absolute;top:1px;left:4px;width:5px;height:10px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg)}.jop-checkbox-label{margin-left:3px;font-size:14px;color:#606266}.jop-checkbox:hover .jop-checkbox-custom{border-color:#409eff}.jop-waterfall-end{text-align:center;padding:20px;color:#888;font-size:1.2em;letter-spacing:2px}.jop-waterfall-btn{color:blue;font:bold 12px monospace;margin-right:8px;cursor:pointer;text-decoration:none}#waterfall_h{height:initial!important;width:initial!important;flex-direction:row;flex-wrap:wrap;margin:5px 15px!important}#waterfall_h .item{position:relative!important;top:initial!important;left:initial!important;float:left}#waterfall_h .movie-box img{position:absolute;top:-200px;bottom:-200px;left:-200px;right:-200px;margin:auto}#waterfall_h .movie-box .photo-frame{position:relative}#waterfall_h .avatar-box .photo-info p{margin:0 0 2px}#waterfall_h .avatar-box .photo-info{line-height:15px;padding:6px;height:220px}#waterfall_h .avatar-box .photo-frame{margin:10px;text-align:center}#waterfall_h .avatar-box.text-center{height:195px}.info p{line-height:18px!important}.screencap img{width:100%;max-width:1000px}.jop-preview-container{display:flex!important;flex-direction:row!important;gap:10px;margin-top:4px} ');
+(o=>{if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})(' .jop-list{box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:10px;width:100%;height:100%;z-index:1;transition:right .2s ease-in-out;color:#000}.jop-button,.jop-button_def{position:relative;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:3px 10px;border-radius:4px;font-weight:500;font-size:14px;border:1px solid #dcdfe6;color:#606266;cursor:pointer}.jop-button_def{margin:10px 0;width:100px}.jop-button:visited{color:#606266}.jop-button:hover{text-decoration:none;color:#409eff;border:1px solid #c6e2ff;background-color:#ecf5ff}.jop-button_label{position:absolute;font-size:10px;padding:4px;border-radius:4px;top:-13px;right:-10px;line-height:.75;color:#67c23a;border:1px solid #e1f3d8;background:#fff}.jop-button_green{color:#fff!important;background-color:#67c23a}.jop-button_green:hover{color:#fff!important;background-color:#95d475}.jop-button_red{color:#fff!important;background-color:#f56c6c}.jop-button_red:hover{color:#fff!important;background-color:#f89898}.jop-button_blue{color:#fff!important;background-color:#409eff}.jop-button_blue:hover{color:#fff!important;background-color:#66b1ff}.jop-button_orange{color:#fff!important;background-color:#e6a23c}.jop-button_orange:hover{color:#fff!important;background-color:#ebb563}.jop-loading{display:inline-block;width:14px;height:14px;margin-right:10px;border:2px dashed #dcdfe6;border-top-color:transparent;border-radius:100%;animation:btnLoading infinite 1s linear}@keyframes btnLoading{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.jop-tag{padding:3px 6px;color:#409eff!important;background:#ecf5ff;border:1px solid #d9ecff;border-radius:4px}.jop-setting{margin-top:20px}.jop-setting-list{display:flex;flex-wrap:wrap}.jop-setting-title{margin:10px 0 5px;font-weight:700}.jop-setting-item{display:flex;height:20px;align-items:center;margin-right:15px;-webkit-user-select:none;user-select:none;cursor:pointer}.db-panel .movie-panel-info div.panel-block{padding:5.5px 12px}.db-panel .jop-app{padding:15px 12px}.lib-panel .jop-app{padding:20px 30px;margin-top:10px}.jav321-panel .jop-app{margin-top:15px;padding-top:15px;border-top:1px solid #eee}input[type=checkbox],input[type=radio]{margin:0 0 0 5px;cursor:pointer}.jop-tooltip-container{position:relative;display:inline-block}.jop-tooltip{position:absolute;bottom:100%;left:50%;transform:translate(-50%);background-color:#333;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;white-space:nowrap;z-index:1000}.jop-setting-label{cursor:pointer}.jop-checkbox{display:inline-flex;align-items:center;cursor:pointer;margin-right:15px;-webkit-user-select:none;user-select:none}.jop-checkbox-input{position:absolute;opacity:0;cursor:pointer}.jop-checkbox-custom{position:relative;display:inline-block;width:16px;height:16px;background-color:#fff;border:1px solid #dcdfe6;border-radius:2px;transition:all .3s}.jop-checkbox-input:checked+.jop-checkbox-custom{background-color:#409eff;border-color:#409eff}.jop-checkbox-input:checked+.jop-checkbox-custom:after{content:"";position:absolute;top:1px;left:4px;width:5px;height:10px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg)}.jop-checkbox-label{margin-left:3px;font-size:14px;color:#606266}.jop-checkbox:hover .jop-checkbox-custom{border-color:#409eff}.jop-waterfall-end{text-align:center;padding:20px;color:#888;font-size:1.2em;letter-spacing:2px}.jop-waterfall-btn{color:blue;font:bold 12px monospace;margin-right:8px;cursor:pointer;text-decoration:none}#waterfall_h{height:initial!important;width:initial!important;flex-direction:row;flex-wrap:wrap;margin:5px 15px!important}#waterfall_h .item{position:relative!important;top:initial!important;left:initial!important;float:left}#waterfall_h .movie-box img{position:absolute;top:-200px;bottom:-200px;left:-200px;right:-200px;margin:auto}#waterfall_h .movie-box .photo-frame{position:relative}#waterfall_h .avatar-box .photo-info p{margin:0 0 2px}#waterfall_h .avatar-box .photo-info{line-height:15px;padding:6px;height:220px}#waterfall_h .avatar-box .photo-frame{margin:10px;text-align:center}#waterfall_h .avatar-box.text-center{height:195px}.info p{line-height:18px!important}.screencap img{width:100%;max-width:1000px}.jop-preview-container{display:flex!important;flex-direction:row!important;gap:10px;margin-top:4px}.jop-translated-title{margin-top:8px;padding:12px;border-radius:5px;border-left:4px solid #4CAF50;background:linear-gradient(135deg,#fff 0%,#f5f5f5 100%);box-shadow:0 4px 8px rgba(0,0,0,.08);font-size:20px}.movie-list .video-title{white-space:normal!important;overflow:hidden!important;text-overflow:ellipsis!important;display:-webkit-box!important;-webkit-line-clamp:3!important;-webkit-box-orient:vertical!important;word-break:break-word}.movie-list .item .meta,.movie-list .item .tags{display:inline-block!important}.movie-list .item .tags{float:right!important;margin-right:8px}#waterfall_h .movie-box .photo-frame{margin-bottom:0!important}#waterfall_h .item{width:184px!important}#waterfall_h .movie-box{margin:4px!important;width:calc(100% - 8px)!important}#waterfall_h .movie-box .photo-info{height:145px!important;overflow:hidden!important;display:block!important;padding:3px 10px!important}#waterfall_h .photo-info span{display:flex!important;flex-direction:column!important;height:100%!important;overflow:hidden!important}.jop-bus-title{display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;word-break:break-word;flex:1;min-height:0}#waterfall_h .photo-info span .item-tag{flex-shrink:0}#waterfall_h .photo-info span .jop-bus-dates{flex-shrink:0;white-space:nowrap} ');
 
 (function (preact) {
   'use strict';
@@ -160,8 +161,9 @@
   const JAVDB_ITEM_SEL = '.movie-list.v.cols-4.vcols-8 .item, .movie-list.v.cols-4.vcols-5 .item, .movie-list.h.cols-4.vcols-8 .item, .movie-list.h.cols-4.vcols-5 .item';
 
   class Waterfall {
-    constructor({ next, item, cont, pagi }) {
+    constructor({ next, item, cont, pagi, onAppend }) {
       this.selector = { next, item, cont, pagi };
+      this.onAppend = onAppend || null;
       this.loading = false;
       this.ended = false;
       this.count = 0;
@@ -209,6 +211,7 @@
             item.querySelectorAll('a').forEach(a => { a.target = '_blank'; });
             cont.appendChild(item);
           });
+          if (this.onAppend) this.onAppend();
         }
         this.count++;
         if (!newNextUrl) this._end();
@@ -239,7 +242,7 @@
       const isJavBus = document.querySelector("footer") && document.querySelector("footer").textContent.includes('JavBus');
       if (isJavBus) {
         javbusItems[0].parentElement.parentElement.id = "waterfall_h";
-        new Waterfall({ next: 'a#next', item: 'div#waterfall div.item', cont: '.masonry', pagi: '.pagination-lg' });
+        new Waterfall({ next: 'a#next', item: 'div#waterfall div.item', cont: '.masonry', pagi: '.pagination-lg', onAppend: translateListPage });
       }
     }
     // AVMOO/AVSOX
@@ -258,7 +261,7 @@
     const javdbItems = document.querySelectorAll(JAVDB_ITEM_SEL);
     if (javdbItems.length) {
       javdbItems[0].parentElement.id = "waterfall";
-      new Waterfall({ next: '.pagination .pagination-next', item: JAVDB_ITEM_SEL, cont: '#waterfall', pagi: '.pagination' });
+      new Waterfall({ next: '.pagination .pagination-next', item: JAVDB_ITEM_SEL, cont: '#waterfall', pagi: '.pagination', onAppend: translateListPage });
     }
   }
 
@@ -920,6 +923,172 @@
       fetchType: "false"
     }
   ];
+  // ===== 标题翻译（日→中） =====
+  const translateText = async (text, sourceLang = "ja", targetLang = "zh-CN") => {
+    if (!text) throw new Error("翻译文本不能为空");
+    const url = "https://translate-pa.googleapis.com/v1/translate?" + new URLSearchParams({
+      "params.client": "gtx",
+      dataTypes: "TRANSLATION",
+      key: "AIzaSyDLEeFI5OtFBwYBIoK_jj5m32rZK5CkCXA",
+      "query.sourceLanguage": sourceLang,
+      "query.targetLanguage": targetLang,
+      "query.text": text
+    });
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    return (await res.json()).translation;
+  };
+  const getTranslateCache = () => _GM_getValue("jop_translate", {});
+  const saveTranslateCache = (cache) => _GM_setValue("jop_translate", cache);
+
+  const isJavDB = () => !!document.querySelector("a[href*='javdb']");
+  const isJavBus = () => !!document.querySelector("a[href*='javbus']");
+
+  async function translateListPage() {
+    if (!_GM_getValue("translateTitle", true)) return;
+    const onJavDB = isJavDB();
+    const onJavBus = isJavBus();
+    if (!onJavDB && !onJavBus) return;
+    const cache = getTranslateCache();
+    let items;
+    if (onJavDB) {
+      items = document.querySelectorAll('.movie-list .item:not([data-jop-translated])');
+    } else {
+      items = document.querySelectorAll('.masonry .item:not([data-jop-translated]), div#waterfall div.item:not([data-jop-translated])');
+    }
+    for (const item of items) {
+      item.setAttribute('data-jop-translated', '1');
+      let code, title, titleEl;
+      if (onJavDB) {
+        titleEl = item.querySelector('.video-title');
+        if (!titleEl) continue;
+        const strong = titleEl.querySelector('strong');
+        code = strong ? strong.textContent.trim() : '';
+        // 取文本节点（排除 strong 里的番号）
+        title = '';
+        titleEl.childNodes.forEach(node => {
+          if (node.nodeType === 3 && node.textContent.trim()) title = node.textContent.trim();
+        });
+      } else {
+        const img = item.querySelector('img');
+        const link = item.querySelector('a');
+        if (!img && !link) continue;
+        title = (img && (img.getAttribute('data-title') || img.getAttribute('title'))) || '';
+        const href = link ? link.getAttribute('href') || '' : '';
+        code = href.split('/').filter(Boolean).pop() || '';
+      }
+      if (!title || !code) continue;
+      const applyTranslation = (text) => {
+        if (onJavDB && titleEl) {
+          titleEl.childNodes.forEach(node => {
+            if (node.nodeType === 3 && node.textContent.trim()) node.textContent = ' ' + text + ' ';
+          });
+          titleEl.setAttribute('title', text);
+        } else {
+          // JavBus: 将标题文本包裹到带 line-clamp 的容器中，保留标签/番号/日期
+          const span = item.querySelector('.photo-info span');
+          if (span) {
+            const wrapper = span.querySelector('.jop-bus-title');
+            if (wrapper) {
+              wrapper.textContent = text;
+            } else {
+              // 首次：找到第一个文本节点和紧跟的 br，包裹到 .jop-bus-title
+              const titleNode = Array.from(span.childNodes).find(n => n.nodeType === 3 && n.textContent.trim());
+              if (titleNode) {
+                const w = document.createElement('span');
+                w.className = 'jop-bus-title';
+                w.textContent = text;
+                span.replaceChild(w, titleNode);
+                // 移除紧跟的 br
+                const nextBr = w.nextSibling;
+                if (nextBr && nextBr.nodeName === 'BR') nextBr.remove();
+              }
+            }
+            // 把 date 元素和中间文本包裹到 .jop-bus-dates
+            if (!span.querySelector('.jop-bus-dates')) {
+              const dates = span.querySelectorAll('date');
+              if (dates.length) {
+                const dw = document.createElement('div');
+                dw.className = 'jop-bus-dates';
+                const nodesToMove = [];
+                let collecting = false;
+                Array.from(span.childNodes).forEach(node => {
+                  if (node.nodeName === 'DATE' || (collecting && node.nodeType === 3)) {
+                    nodesToMove.push(node);
+                    collecting = true;
+                  }
+                });
+                nodesToMove.forEach(n => dw.appendChild(n));
+                span.appendChild(dw);
+              }
+            }
+          }
+        }
+      };
+      if (cache[code]) {
+        applyTranslation(cache[code]);
+      } else {
+        translateText(title).then(result => {
+          cache[code] = result;
+          saveTranslateCache(cache);
+          applyTranslation(result);
+        }).catch(err => console.error('||jop 翻译失败:', code, err));
+      }
+    }
+  }
+
+  async function translateDetailTitle(libItem, CODE) {
+    if (!_GM_getValue("translateTitle", true)) return;
+    if (libItem.name !== 'javdb' && libItem.name !== 'javbus') return;
+    let originalText, insertAfterEl;
+    if (libItem.name === 'javdb') {
+      // JavDB 标题结构：.current-title 显示当前语言, .origin-title 是原始日文
+      // 策略：强制显示原标题，隐藏 JavDB 自带翻译，用我们的翻译替代
+      const originTitle = document.querySelector('.origin-title');
+      const currentTitle = document.querySelector('.current-title');
+      if (originTitle && currentTitle) {
+        // 有双标题：origin-title 是日文原标题，current-title 是 JavDB 翻译
+        // 让原标题始终可见，隐藏 JavDB 的翻译和"顯示原標題"按钮
+        originTitle.style.display = 'inline';
+        currentTitle.style.display = 'none';
+        const metaLink = originTitle.parentElement.querySelector('.meta-link');
+        if (metaLink) metaLink.style.display = 'none';
+        originalText = originTitle.textContent.trim();
+        insertAfterEl = originTitle;
+      } else if (currentTitle) {
+        // 只有 current-title（无翻译的情况），直接用它
+        originalText = currentTitle.textContent.trim();
+        insertAfterEl = currentTitle;
+      } else {
+        return;
+      }
+    } else {
+      const h3 = document.querySelector('.container > h3') || document.querySelector('h3');
+      if (!h3) return;
+      originalText = h3.textContent.trim();
+      insertAfterEl = h3;
+    }
+    if (!originalText) return;
+    const container = document.createElement('div');
+    container.className = 'jop-translated-title';
+    container.textContent = '翻译中...';
+    insertAfterEl.insertAdjacentElement('afterend', container);
+    const cache = getTranslateCache();
+    if (cache[CODE]) {
+      container.textContent = cache[CODE];
+      return;
+    }
+    try {
+      const result = await translateText(originalText);
+      container.textContent = result;
+      cache[CODE] = result;
+      saveTranslateCache(cache);
+    } catch (err) {
+      container.textContent = '翻译失败: ' + err.message;
+      container.style.color = 'red';
+    }
+  }
+
   const SP_PREFIX = "300";
   const gmGet = ({ url, method = "GET", data, headers }) => {
     return new Promise((resolve, reject) => {
@@ -1347,6 +1516,18 @@
                 value: hiddenError,
                 onChange: handlehiddenErrorChange
               }
+            ),
+            /* @__PURE__ */ u$1(
+              Checkbox,
+              {
+                label: "标题翻译（日→中）",
+                value: _GM_getValue("translateTitle", true),
+                tip: "将日文标题翻译为中文，支持详情页和列表页",
+                onChange: (checked) => {
+                  _GM_setValue("translateTitle", checked);
+                  location.reload();
+                }
+              }
             )
           ] })
         ] }),
@@ -1763,6 +1944,8 @@
     insertWaterfallButton();
     initWaterfall();
     initSehuatangEnhance();
+    // 列表页首屏翻译
+    translateListPage();
 
     // 2. 尝试匹配详情页（原有搜索链接逻辑）
     const libItem = libSites.find((item) => document.querySelector(item.identifier));
@@ -1772,6 +1955,8 @@
     }
     const CODE = getCode(libItem);
     libItem.method();
+    // 详情页标题翻译
+    translateDetailTitle(libItem, CODE);
     const panel = document.querySelector(libItem.querys.panelQueryStr);
     if (!panel) {
       console.error("||jop 插入界面失败");
