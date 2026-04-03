@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JAV助手
 // @namespace    https://github.com/andyyippro/userscript-fix
-// @version      1.7.0
+// @version      1.8.0
 // @author       andyyippro
 // @description  为 JavDB、JavBus、JavLibrary、JAV321 这四个站点添加跳转在线观看的链接
 // @license      MIT
@@ -30,6 +30,7 @@
 // @require      https://update.greasyfork.org/scripts/522123/1511104/tampermonkey%20parallel.js
 // @require      https://cdn.jsdelivr.net/npm/preact@10.25.4/dist/preact.min.js
 // @connect      dmm.co.jp
+// @connect      api.dmm.com
 // @connect      jable.tv
 // @connect      missav.ws
 // @connect      123av.com
@@ -70,7 +71,7 @@
 // @updateURL https://raw.githubusercontent.com/andyyippro/userscript-fix/main/JAV%E5%8A%A9%E6%89%8B.user.js
 // ==/UserScript==
 
-(o=>{if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})(' .jop-list{box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:10px;width:100%;height:100%;z-index:1;transition:right .2s ease-in-out;color:#000}.jop-button,.jop-button_def{position:relative;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:3px 10px;border-radius:4px;font-weight:500;font-size:14px;border:1px solid #dcdfe6;color:#606266;cursor:pointer}.jop-button_def{margin:10px 0;width:100px}.jop-button:visited{color:#606266}.jop-button:hover{text-decoration:none;color:#409eff;border:1px solid #c6e2ff;background-color:#ecf5ff}.jop-button_label{position:absolute;font-size:10px;padding:4px;border-radius:4px;top:-13px;right:-10px;line-height:.75;color:#67c23a;border:1px solid #e1f3d8;background:#fff}.jop-button_green{color:#fff!important;background-color:#67c23a}.jop-button_green:hover{color:#fff!important;background-color:#95d475}.jop-button_red{color:#fff!important;background-color:#f56c6c}.jop-button_red:hover{color:#fff!important;background-color:#f89898}.jop-button_blue{color:#fff!important;background-color:#409eff}.jop-button_blue:hover{color:#fff!important;background-color:#66b1ff}.jop-button_orange{color:#fff!important;background-color:#e6a23c}.jop-button_orange:hover{color:#fff!important;background-color:#ebb563}.jop-loading{display:inline-block;width:14px;height:14px;margin-right:10px;border:2px dashed #dcdfe6;border-top-color:transparent;border-radius:100%;animation:btnLoading infinite 1s linear}@keyframes btnLoading{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.jop-tag{padding:3px 6px;color:#409eff!important;background:#ecf5ff;border:1px solid #d9ecff;border-radius:4px}.jop-setting{margin-top:20px}.jop-setting-list{display:flex;flex-wrap:wrap}.jop-setting-title{margin:10px 0 5px;font-weight:700}.jop-setting-item{display:flex;height:20px;align-items:center;margin-right:15px;-webkit-user-select:none;user-select:none;cursor:pointer}.db-panel .movie-panel-info div.panel-block{padding:5.5px 12px}.db-panel .jop-app{padding:15px 12px}.lib-panel .jop-app{padding:20px 30px;margin-top:10px}.jav321-panel .jop-app{margin-top:15px;padding-top:15px;border-top:1px solid #eee}input[type=checkbox],input[type=radio]{margin:0 0 0 5px;cursor:pointer}.jop-tooltip-container{position:relative;display:inline-block}.jop-tooltip{position:absolute;bottom:100%;left:50%;transform:translate(-50%);background-color:#333;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;white-space:nowrap;z-index:1000}.jop-setting-label{cursor:pointer}.jop-checkbox{display:inline-flex;align-items:center;cursor:pointer;margin-right:15px;-webkit-user-select:none;user-select:none}.jop-checkbox-input{position:absolute;opacity:0;cursor:pointer}.jop-checkbox-custom{position:relative;display:inline-block;width:16px;height:16px;background-color:#fff;border:1px solid #dcdfe6;border-radius:2px;transition:all .3s}.jop-checkbox-input:checked+.jop-checkbox-custom{background-color:#409eff;border-color:#409eff}.jop-checkbox-input:checked+.jop-checkbox-custom:after{content:"";position:absolute;top:1px;left:4px;width:5px;height:10px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg)}.jop-checkbox-label{margin-left:3px;font-size:14px;color:#606266}.jop-checkbox:hover .jop-checkbox-custom{border-color:#409eff}.jop-waterfall-end{text-align:center;padding:20px;color:#888;font-size:1.2em;letter-spacing:2px}.jop-waterfall-btn{color:blue;font:bold 12px monospace;margin-right:8px;cursor:pointer;text-decoration:none}#waterfall_h{height:initial!important;width:initial!important;flex-direction:row;flex-wrap:wrap;margin:5px 15px!important}#waterfall_h .item{position:relative!important;top:initial!important;left:initial!important;float:left}#waterfall_h .movie-box img{position:absolute;top:-200px;bottom:-200px;left:-200px;right:-200px;margin:auto}#waterfall_h .movie-box .photo-frame{position:relative}#waterfall_h .avatar-box .photo-info p{margin:0 0 2px}#waterfall_h .avatar-box .photo-info{line-height:15px;padding:6px;height:220px}#waterfall_h .avatar-box .photo-frame{margin:10px;text-align:center}#waterfall_h .avatar-box.text-center{height:195px}.info p{line-height:18px!important}.screencap img{width:100%;max-width:1000px}.jop-preview-container{display:flex!important;flex-direction:row!important;gap:10px;margin-top:4px}.jop-translated-title{margin-top:8px;padding:12px;border-radius:5px;border-left:4px solid #4CAF50;background:linear-gradient(135deg,#fff 0%,#f5f5f5 100%);box-shadow:0 4px 8px rgba(0,0,0,.08);font-size:20px}.movie-list .video-title{white-space:normal!important;overflow:hidden!important;text-overflow:ellipsis!important;display:-webkit-box!important;-webkit-line-clamp:3!important;-webkit-box-orient:vertical!important;word-break:break-word}.movie-list .item .meta,.movie-list .item .tags{display:inline-block!important}.movie-list .item .tags{float:right!important;margin-right:8px}#waterfall_h .movie-box .photo-frame{margin-bottom:0!important}#waterfall_h .item{width:184px!important}#waterfall_h .movie-box{margin:4px!important;width:calc(100% - 8px)!important}#waterfall_h .movie-box .photo-info{height:145px!important;overflow:hidden!important;display:block!important;padding:3px 10px!important}#waterfall_h .photo-info span{display:flex!important;flex-direction:column!important;height:100%!important;overflow:hidden!important}.jop-bus-title{display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;word-break:break-word;flex:1;min-height:0}#waterfall_h .photo-info span .item-tag{flex-shrink:0}#waterfall_h .photo-info span .jop-bus-dates{flex-shrink:0;white-space:nowrap} ');
+(o=>{if(typeof GM_addStyle=="function"){GM_addStyle(o);return}const e=document.createElement("style");e.textContent=o,document.head.append(e)})(' .jop-list{box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:10px;width:100%;height:100%;z-index:1;transition:right .2s ease-in-out;color:#000}.jop-button,.jop-button_def{position:relative;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:3px 10px;border-radius:4px;font-weight:500;font-size:14px;border:1px solid #dcdfe6;color:#606266;cursor:pointer}.jop-button_def{margin:10px 0;width:100px}.jop-button:visited{color:#606266}.jop-button:hover{text-decoration:none;color:#409eff;border:1px solid #c6e2ff;background-color:#ecf5ff}.jop-button_label{position:absolute;font-size:10px;padding:4px;border-radius:4px;top:-13px;right:-10px;line-height:.75;color:#67c23a;border:1px solid #e1f3d8;background:#fff}.jop-button_green{color:#fff!important;background-color:#67c23a}.jop-button_green:hover{color:#fff!important;background-color:#95d475}.jop-button_red{color:#fff!important;background-color:#f56c6c}.jop-button_red:hover{color:#fff!important;background-color:#f89898}.jop-button_blue{color:#fff!important;background-color:#409eff}.jop-button_blue:hover{color:#fff!important;background-color:#66b1ff}.jop-button_orange{color:#fff!important;background-color:#e6a23c}.jop-button_orange:hover{color:#fff!important;background-color:#ebb563}.jop-loading{display:inline-block;width:14px;height:14px;margin-right:10px;border:2px dashed #dcdfe6;border-top-color:transparent;border-radius:100%;animation:btnLoading infinite 1s linear}@keyframes btnLoading{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.jop-tag{padding:3px 6px;color:#409eff!important;background:#ecf5ff;border:1px solid #d9ecff;border-radius:4px}.jop-setting{margin-top:20px}.jop-setting-list{display:flex;flex-wrap:wrap}.jop-setting-title{margin:10px 0 5px;font-weight:700}.jop-setting-item{display:flex;height:20px;align-items:center;margin-right:15px;-webkit-user-select:none;user-select:none;cursor:pointer}.db-panel .movie-panel-info div.panel-block{padding:5.5px 12px}.db-panel .jop-app{padding:15px 12px}.lib-panel .jop-app{padding:20px 30px;margin-top:10px}.jav321-panel .jop-app{margin-top:15px;padding-top:15px;border-top:1px solid #eee}input[type=checkbox],input[type=radio]{margin:0 0 0 5px;cursor:pointer}.jop-tooltip-container{position:relative;display:inline-block}.jop-tooltip{position:absolute;bottom:100%;left:50%;transform:translate(-50%);background-color:#333;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;white-space:nowrap;z-index:1000}.jop-setting-label{cursor:pointer}.jop-checkbox{display:inline-flex;align-items:center;cursor:pointer;margin-right:15px;-webkit-user-select:none;user-select:none}.jop-checkbox-input{position:absolute;opacity:0;cursor:pointer}.jop-checkbox-custom{position:relative;display:inline-block;width:16px;height:16px;background-color:#fff;border:1px solid #dcdfe6;border-radius:2px;transition:all .3s}.jop-checkbox-input:checked+.jop-checkbox-custom{background-color:#409eff;border-color:#409eff}.jop-checkbox-input:checked+.jop-checkbox-custom:after{content:"";position:absolute;top:1px;left:4px;width:5px;height:10px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg)}.jop-checkbox-label{margin-left:3px;font-size:14px;color:#606266}.jop-checkbox:hover .jop-checkbox-custom{border-color:#409eff}.jop-waterfall-end{text-align:center;padding:20px;color:#888;font-size:1.2em;letter-spacing:2px}.jop-waterfall-btn{color:blue;font:bold 12px monospace;margin-right:8px;cursor:pointer;text-decoration:none}#waterfall_h{height:initial!important;width:initial!important;flex-direction:row;flex-wrap:wrap;margin:5px 15px!important}#waterfall_h .item{position:relative!important;top:initial!important;left:initial!important;float:left}#waterfall_h .movie-box img{position:absolute;top:-200px;bottom:-200px;left:-200px;right:-200px;margin:auto}#waterfall_h .movie-box .photo-frame{position:relative}#waterfall_h .avatar-box .photo-info p{margin:0 0 2px}#waterfall_h .avatar-box .photo-info{line-height:15px;padding:6px;height:220px}#waterfall_h .avatar-box .photo-frame{margin:10px;text-align:center}#waterfall_h .avatar-box.text-center{height:195px}.info p{line-height:18px!important}.screencap img{width:100%;max-width:1000px}.jop-preview-container{display:flex!important;flex-direction:row!important;gap:10px;margin-top:4px}.jop-translated-title{margin-top:8px;padding:12px;border-radius:5px;border-left:4px solid #4CAF50;background:linear-gradient(135deg,#fff 0%,#f5f5f5 100%);box-shadow:0 4px 8px rgba(0,0,0,.08);font-size:20px}.movie-list .video-title{white-space:normal!important;overflow:hidden!important;text-overflow:ellipsis!important;display:-webkit-box!important;-webkit-line-clamp:3!important;-webkit-box-orient:vertical!important;word-break:break-word}.movie-list .item .meta,.movie-list .item .tags{display:inline-block!important}.movie-list .item .tags{float:right!important;margin-right:8px}#waterfall_h .movie-box .photo-frame{margin-bottom:0!important}#waterfall_h .item{width:184px!important}#waterfall_h .movie-box{margin:4px!important;width:calc(100% - 8px)!important}#waterfall_h .movie-box .photo-info{height:145px!important;overflow:hidden!important;display:block!important;padding:3px 10px!important}#waterfall_h .photo-info span{display:flex!important;flex-direction:column!important;height:100%!important;overflow:hidden!important}.jop-bus-title{display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;word-break:break-word;flex:1;min-height:0}#waterfall_h .photo-info span .item-tag{flex-shrink:0}#waterfall_h .photo-info span .jop-bus-dates{flex-shrink:0;white-space:nowrap}.jop-video-modal{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.95);z-index:12345699;display:flex;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:opacity .2s ease}.jop-video-modal.is-open{opacity:1;visibility:visible}.jop-video-modal-content{position:relative;display:flex;flex-direction:column;align-items:center;gap:0;max-width:calc(100vw - 80px);max-height:calc(100vh - 40px)}.jop-video-modal-content video{max-width:calc(100vw - 80px);max-height:calc(100vh - 80px);display:block;background:#000}.jop-video-inline-controls{display:flex;flex-direction:row;justify-content:center;flex-wrap:wrap;gap:6px;padding:6px 8px;background:rgba(0,0,0,.85);width:100%;box-sizing:border-box}.jop-video-control-btn{min-width:70px;padding:5px 10px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:4px;cursor:pointer;text-align:center;font-size:13px;transition:background-color .2s,border-color .2s}.jop-video-control-btn:hover{background:rgba(255,255,255,.35)}.jop-video-control-btn.active{background-color:#1890ff;color:#fff;font-weight:700;border:1px solid #096dd9} ');
 
 (function (preact) {
   'use strict';
@@ -156,6 +157,200 @@
   ];
   var _GM_getValue = /* @__PURE__ */ (() => typeof GM_getValue != "undefined" ? GM_getValue : void 0)();
   var _GM_setValue = /* @__PURE__ */ (() => typeof GM_setValue != "undefined" ? GM_setValue : void 0)();
+  var _GM_xmlhttpRequest2 = /* @__PURE__ */ (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
+
+  // ===== DMM 预览视频 =====
+  const qualityOptions = [
+    { quality: "mmb", text: "432p" },
+    { quality: "mhb", text: "576p" },
+    { quality: "hmb", text: "720p" },
+    { quality: "hhb", text: "1080p" },
+    { quality: "hhbs", text: "1080p60" },
+    { quality: "4k", text: "4K" },
+    { quality: "4ks", text: "4K60" }
+  ];
+  const ALL_QUALITY_KEYS = ["dmb_w","sm_s","dm_s","dmb_s","mhb_w","mmb","mhb","hmb","hhb","hhbs","4k","4ks"];
+
+  const selectDefaultQuality = (availableQualities) => {
+    if (!availableQualities || availableQualities.length === 0) return null;
+    const availableSet = new Set(availableQualities);
+    const priorityOrder = [...qualityOptions].reverse().map(o => o.quality);
+    for (const q of priorityOrder) {
+      if (availableSet.has(q)) return q;
+    }
+    return availableQualities[0];
+  };
+
+  const dmmFetch = (url, headers = {}) => {
+    return new Promise((resolve, reject) => {
+      _GM_xmlhttpRequest2({
+        method: 'GET',
+        url,
+        headers,
+        anonymous: false,
+        timeout: 15000,
+        onload: (response) => {
+          if (response.status >= 200 && response.status < 300) {
+            try {
+              resolve(JSON.parse(response.responseText));
+            } catch {
+              resolve({ _raw: response.responseText });
+            }
+          } else {
+            reject(new Error(`Request failed: ${response.status}`));
+          }
+        },
+        onerror: () => reject(new Error('Network error')),
+        ontimeout: () => reject(new Error('Request timeout'))
+      });
+    });
+  };
+
+  const JOP_DMM_CACHE_KEY = 'jop_dmm_video_cache';
+
+  class DmmVideoFetcher {
+    constructor(carNum) {
+      this.carNum = carNum;
+    }
+    _checkCache() {
+      const cachedData = _GM_getValue(JOP_DMM_CACHE_KEY, {});
+      const entry = cachedData[this.carNum];
+      if (entry && entry._ts && Date.now() - entry._ts < 7 * 86400000) {
+        console.log("||jop DMM视频缓存命中", this.carNum);
+        return entry.data;
+      }
+      if (entry && !entry._ts) {
+        // 兼容旧格式缓存，直接返回
+        console.log("||jop DMM视频缓存命中(旧格式)", this.carNum);
+        return entry;
+      }
+      return null;
+    }
+    _updateCache(videoMap) {
+      const cachedData = _GM_getValue(JOP_DMM_CACHE_KEY, {});
+      cachedData[this.carNum] = { data: videoMap, _ts: Date.now() };
+      // 清理过期条目 + 限制数量
+      const now = Date.now();
+      const keys = Object.keys(cachedData);
+      for (const k of keys) {
+        const e = cachedData[k];
+        if (e && e._ts && now - e._ts > 7 * 86400000) delete cachedData[k];
+      }
+      const remaining = Object.keys(cachedData);
+      if (remaining.length > 100) {
+        for (let i = 0; i < remaining.length - 100; i++) delete cachedData[remaining[i]];
+      }
+      _GM_setValue(JOP_DMM_CACHE_KEY, cachedData);
+    }
+    async _searchContentIds() {
+      const carNum = this.carNum;
+      const carNumNoHyphen = carNum.replace(/-/g, "");
+      const carNumLower = carNum.toLowerCase();
+      const keywordAttempts = [
+        { keyword: carNum.replace("-", "00"), name: "00-替换" },
+        { keyword: carNum, name: "原始番号" },
+        { keyword: carNumNoHyphen, name: "无连字符" }
+      ];
+      for (const attempt of keywordAttempts) {
+        const { keyword, name } = attempt;
+        const currentLower = keyword.toLowerCase();
+        const apiUrl = `https://api.dmm.com/affiliate/v3/ItemList?${new URLSearchParams({
+          api_id: "UrwskPfkqQ0DuVry2gYL",
+          affiliate_id: "10278-996",
+          output: "json",
+          site: "FANZA",
+          sort: "match",
+          keyword: keyword
+        }).toString()}`;
+        let response;
+        try {
+          response = await dmmFetch(apiUrl);
+        } catch (e) {
+          console.error(`||jop DMM API 请求失败 (${name}):`, e);
+          continue;
+        }
+        if (!response || !response.result || !response.result.result_count) continue;
+        const newItems = [];
+        for (const item of response.result.items) {
+          if (newItems.length >= 2) break;
+          const contentId = item.content_id || "";
+          const makerProduct = item.maker_product || "";
+          if (contentId.includes(currentLower.replace("-", "")) ||
+              carNumLower === makerProduct.toLowerCase() ||
+              contentId.includes(carNumNoHyphen.toLowerCase())) {
+            newItems.push({
+              serviceCode: item.service_code,
+              floorCode: item.floor_code,
+              contentId: contentId,
+              pageUrl: item.URL
+            });
+          }
+        }
+        if (newItems.length > 0) return newItems;
+      }
+      return null;
+    }
+    async _extractTrailerLinks({ contentId, serviceCode, floorCode }) {
+      const trailerPageUrl = `https://www.dmm.co.jp/service/digitalapi/-/html5_player/=/cid=${contentId}/mtype=AhRVShI_/service=${serviceCode}/floor=${floorCode}/mode=/`;
+      const rawResp = await dmmFetch(trailerPageUrl, {
+        "accept-language": "ja-JP,ja;q=0.9",
+        "Cookie": "age_check_done=1"
+      });
+      const htmlContent = rawResp && rawResp._raw ? rawResp._raw : (typeof rawResp === "string" ? rawResp : null);
+      if (!htmlContent) throw new Error("解析播放页内容失败");
+      if (htmlContent.includes("このサービスはお住まいの地域からは")) throw new Error("节点不可用，请将DMM域名分流到日本IP");
+      const match = htmlContent.match(/const\s+args\s+=\s+(.*);/);
+      if (!match) throw new Error("未找到播放器参数");
+      let bitrates;
+      try {
+        ({ bitrates } = JSON.parse(match[1]));
+      } catch (e) {
+        throw new Error("解析播放器JSON失败: " + e.message);
+      }
+      if (!Array.isArray(bitrates)) throw new Error("bitrates字段无效");
+      const finalQualityMap = {};
+      const qualityKeys = ALL_QUALITY_KEYS.join("|");
+      const qualityRegex = new RegExp(`(${qualityKeys})\\.mp4$`);
+      for (const item of bitrates) {
+        const url = item && item.src;
+        if (!url || typeof url !== "string" || !url.endsWith(".mp4")) continue;
+        const qMatch = url.match(qualityRegex);
+        if (qMatch && qMatch[1] && !finalQualityMap[qMatch[1]]) {
+          finalQualityMap[qMatch[1]] = url;
+        }
+      }
+      if (Object.keys(finalQualityMap).length === 0) throw new Error("未找到可用预览视频");
+      return finalQualityMap;
+    }
+    async fetchVideo() {
+      const cached = this._checkCache();
+      if (cached) return cached;
+      const testCarNum = this.carNum.toLowerCase();
+      if (testCarNum.startsWith("heyzo") || /^(n\d+|\d+(-\d+)*)$/.test(testCarNum)) return null;
+      if (this.carNum.includes("VR-")) return null;
+      let contentItems;
+      try {
+        contentItems = await this._searchContentIds();
+      } catch (e) {
+        console.error("||jop DMM搜索失败:", e);
+        return null;
+      }
+      if (!contentItems || contentItems.length === 0) return null;
+      try {
+        const finalVideoMap = await Promise.any(contentItems.map(item => this._extractTrailerLinks(item)));
+        this._updateCache(finalVideoMap);
+        return finalVideoMap;
+      } catch (error) {
+        const errors = error.errors || [error];
+        if (errors.some(err => err.message && err.message.includes("节点不可用"))) {
+          console.warn("||jop DMM节点不可用，需要日本IP");
+        } else {
+          console.error("||jop DMM视频解析失败:", errors[0]);
+        }
+        return null;
+      }
+    }
+  }
 
   // ===== 瀑布流/无限滚动 =====
   const JAVDB_ITEM_SEL = '.movie-list.v.cols-4.vcols-8 .item, .movie-list.v.cols-4.vcols-5 .item, .movie-list.h.cols-4.vcols-8 .item, .movie-list.h.cols-4.vcols-5 .item';
@@ -1766,6 +1961,14 @@
     }, [CODE]);
     return /* @__PURE__ */ u$1(preact.Fragment, {});
   };
+  // ===== DMM 预览视频组件 =====
+  const shouldShowPreview = (code) => {
+    const lower = code.toLowerCase();
+    if (lower.startsWith("heyzo")) return false;
+    if (/^(n\d+|\d+(-\d+)*)$/.test(lower)) return false;
+    return true;
+  };
+
   const SiteBtn = ({ siteItem, CODE, multipleNavi, hiddenError, siteResults, libItem, setSiteResults }) => {
     const { name } = siteItem;
     const [loading, setLoading] = h(false);
@@ -1971,8 +2174,184 @@
     // 3. 115离线下载按钮（仅 JavDB 详情页）
     if (libItem.name === 'javdb') {
       inject115Buttons();
+      initJavDbPreviewHook(CODE);
+    }
+
+    // 4. JavBus 预览视频入口
+    if (libItem.name === 'javbus') {
+      initJavBusPreviewHook(CODE).catch(e => console.error('||jop JavBus preview hook error:', e));
     }
   }
+
+  // ===== JavDB 预览视频拦截 =====
+  function initJavDbPreviewHook(CODE) {
+    if (!shouldShowPreview(CODE)) return;
+    const pvc = document.querySelector('.preview-video-container');
+    if (!pvc) return;
+
+    let dmmVideoMap = null;
+    let dmmLoadPromise = null;
+
+    // 预加载 DMM 视频（多次调用共享同一个 Promise）
+    const preloadDmm = () => {
+      if (dmmLoadPromise) return dmmLoadPromise;
+      dmmLoadPromise = (async () => {
+        try {
+          const fetcher = new DmmVideoFetcher(CODE);
+          const result = await fetcher.fetchVideo();
+          if (result && Object.keys(result).length > 0) {
+            dmmVideoMap = result;
+          }
+        } catch (e) {
+          console.error("||jop DMM预加载失败:", e);
+        }
+      })();
+      return dmmLoadPromise;
+    };
+    // 页面加载后自动预加载
+    preloadDmm();
+
+    // 拦截点击
+    pvc.addEventListener('click', async (e) => {
+      // 等待加载完成
+      if (!dmmVideoMap) {
+        await preloadDmm();
+        if (!dmmVideoMap) return; // 加载失败，放行原始行为
+      }
+
+      // 阻止 fancybox
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      showDmmVideoInFancybox(dmmVideoMap);
+    }, true); // capture phase 确保在 fancybox 之前拦截
+  }
+
+  function showDmmVideoInFancybox(videoMap) {
+    // 移除已有的弹窗
+    const existing = document.querySelector('.jop-video-modal');
+    if (existing) existing.remove();
+
+    const keys = Object.keys(videoMap);
+    const defaultQuality = selectDefaultQuality(keys) || keys[0];
+    const defaultUrl = videoMap[defaultQuality];
+    if (!defaultUrl) return;
+
+    // 创建模态框
+    const modal = document.createElement('div');
+    modal.className = 'jop-video-modal is-open';
+
+    const content = document.createElement('div');
+    content.className = 'jop-video-modal-content';
+
+    const video = document.createElement('video');
+    video.id = 'jop-dmm-video';
+    video.controls = true;
+    video.playsInline = true;
+    video.src = defaultUrl;
+
+    // 静音记忆
+    const savedMuted = _GM_getValue("jop_videoMuted", true);
+    video.muted = savedMuted;
+    video.addEventListener('volumechange', () => {
+      _GM_setValue("jop_videoMuted", video.muted);
+    });
+
+    content.appendChild(video);
+
+    // 画质按钮
+    const controlBox = document.createElement('div');
+    controlBox.className = 'jop-video-inline-controls';
+
+    let currentQuality = defaultQuality;
+    const availableQualities = qualityOptions.filter(o => videoMap[o.quality]);
+
+    availableQualities.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'jop-video-control-btn' + (currentQuality === opt.quality ? ' active' : '');
+      btn.textContent = opt.text;
+      btn.dataset.quality = opt.quality;
+      btn.addEventListener('click', () => {
+        if (opt.quality === currentQuality) return;
+        const savedTime = video.currentTime;
+        video.src = videoMap[opt.quality];
+        video.currentTime = savedTime;
+        video.play().catch(() => {});
+        currentQuality = opt.quality;
+        controlBox.querySelectorAll('.jop-video-control-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+      controlBox.appendChild(btn);
+    });
+
+    content.appendChild(controlBox);
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+
+    // 播放
+    video.play().catch(() => {});
+
+    // 统一关闭函数，确保清理所有监听器
+    const closeModal = () => {
+      video.pause();
+      video.src = '';
+      document.removeEventListener('keydown', escHandler);
+      modal.remove();
+    };
+
+    // 点击遮罩关闭
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // ESC 关闭
+    const escHandler = (e) => {
+      if (e.key === 'Escape') closeModal();
+    };
+    document.addEventListener('keydown', escHandler);
+  }
+
+  // ===== JavBus 预览视频入口 =====
+  async function initJavBusPreviewHook(CODE) {
+    if (!shouldShowPreview(CODE)) return;
+    const sampleWaterfall = document.querySelector('#sample-waterfall');
+    if (!sampleWaterfall) return;
+
+    // 先预加载 DMM 视频，成功后才插入入口
+    let dmmVideoMap = null;
+    try {
+      const fetcher = new DmmVideoFetcher(CODE);
+      const result = await fetcher.fetchVideo();
+      if (result && Object.keys(result).length > 0) {
+        dmmVideoMap = result;
+      }
+    } catch (e) {
+      console.error("||jop JavBus DMM预加载失败:", e);
+    }
+    if (!dmmVideoMap) return; // 无视频源，不插入入口
+
+    // 取第一张缩略图作为封面
+    const firstImg = sampleWaterfall.querySelector('.sample-box .photo-frame img');
+    const imgSrc = firstImg ? firstImg.src : '';
+
+    // 创建视频入口元素，插入到缩略图最前面
+    const trigger = document.createElement('a');
+    trigger.className = 'sample-box jop-bus-preview-trigger';
+    trigger.style.cssText = 'cursor:pointer;position:relative;display:inline-block;';
+    trigger.innerHTML = `<div class="photo-frame" style="position:relative;">` +
+      `<img src="${imgSrc}" style="max-width:120px;max-height:90px;">` +
+      `<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:32px;text-shadow:0 0 10px rgba(0,0,0,.7);">▶</div>` +
+      `</div>`;
+    sampleWaterfall.insertBefore(trigger, sampleWaterfall.firstChild);
+
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      showDmmVideoInFancybox(dmmVideoMap);
+    });
+  }
+
   main();
 
 })(preact);
